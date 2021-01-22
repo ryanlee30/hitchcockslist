@@ -1,8 +1,14 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
+const firebase_API_KEY = process.env.REACT_APP_FIREBASE_API_KEY;
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
 var firebaseConfig = {
-    apiKey: "AIzaSyCLJAKp4OGwF7viAlxnX8i0cW7r8K9Pkww",
+    apiKey: firebase_API_KEY,
     authDomain: "hitchcockslist.firebaseapp.com",
     projectId: "hitchcockslist",
     storageBucket: "hitchcockslist.appspot.com",
