@@ -1,17 +1,76 @@
-.App {
-  text-align: center;
+@font-face {
+  font-family: 'Hitchcock';
+  src: local('Hitchcock'), url(./fonts/Hitchcock.ttf) format('truetype');
 }
 
-.App-header {
-  background-color: #0F0F0F;
+body {
+  background-color: #0F0F0F !important;
+  font-family: Calibri;
+}
+
+.App {
+  /*  */
+}
+
+.frontPageTitle {
+  padding-top: 35vh;
+  padding-left: 5vw;
+  font-size: calc(20px + 8vmin);
+}
+
+.left-panel {
+  position: absolute;
+  right: 25%;
+  width: 75%;
+  color: #FFE600;
+  font-family: Hitchcock;
+}
+
+.right-panel {
+  background-color: #0479D2;
+  position: absolute;
+  left: 75%;
+  width: 25%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
+  text-align: center;
   color: white;
 }
+
+#formAuthEmail, #formAuthPassword {
+  width: 240px;
+}
+
+#formSignUpFirstName, #formSignUpLastName, #formSignUpEmail, #formSignUpPassword {
+  width: 240px;
+}
+
+.redirect-btn {
+  font-family: Hitchcock;
+  color: white;
+}
+
+.redirect-btn:hover {
+  color: #004f99;
+}
+
+.forgot-pwd-btn {
+  padding-top: 20px;
+  font-size: calc(5px + 1vmin);
+  color: white;
+}
+
+.forgot-pwd-btn:hover {
+  color: white;
+}
+
+/* .redirect-btn:hover {
+  color: black;
+} */
 
 /* #login-form {
   position: absolute;

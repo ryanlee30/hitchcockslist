@@ -1,30 +1,36 @@
 import './App.css';
 import { Component } from 'react';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { Button, Form } from 'react-bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css';
-// import SignIn from './SignIn';
-// import Register from "./Register";
+import Login from './controllers/Login';
+import Signup from "./controllers/Signup";
+import Home from "./controllers/Home";
+import User from "./controllers/User";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <Button variant="secondary">Register</Button>
-          <br></br>
-          <Form.Group controlId="formAuthEmail">
-            <Form.Control type="email" placeholder="Email" />
-          </Form.Group>
-          <Form.Group controlId="formAuthPassword">
-            <Form.Control type="password" placeholder="Password" />
-          </Form.Group>
-          <Form.Group controlId="formAuthRemember">
-            <Form.Check type="checkbox" label="Remember me" style={{fontSize: 15}}/>
-          </Form.Group>
-          <Button variant="primary">Sign In</Button>
-          <Button variant="link">Forgot your password?</Button>
-        </header>
+        <div className="left-panel">
+          <h1 className="frontPageTitle">Hitchcock's List</h1>
+        </div>
+        <div className="right-panel">
+          <BrowserRouter>
+          <Switch>
+              <Route path={"/login"}>
+                <Login />
+              </Route>
+              <Route path={"/signup"}>
+                <Signup />
+              </Route>
+              <Route path={"/home"}>
+                <Home />
+              </Route>
+              <Route path={"/user"}>
+                <User />
+              </Route>
+          </Switch>
+          </BrowserRouter>
+        </div>
       </div>
     );
   }

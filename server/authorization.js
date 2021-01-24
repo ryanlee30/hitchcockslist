@@ -1,6 +1,6 @@
-const firebase = require("./firebase/index");
+const admin = require("./firebase/firebase");
 
-function authentication(request, response, next) {
+function authorization(request, response, next) {
   const headerToken = request.headers.authorization;
   if (!headerToken) {
     return response.send({ message: "No token provided" }).status(401);
@@ -11,11 +11,14 @@ function authentication(request, response, next) {
   }
 
   const token = headerToken.split(" ")[1];
-  firebase
+  admin
     .auth()
     .verifyIdToken(token)
-    .then(() => next())
+    .then((decodedToken) => {
+      response.locals.uid = decodedToken.uid;
+      next();
+    })
     .catch(() => response.send({ message: "Could not authorize" }).status(403));
 }
 
-module.exports = authentication;
+module.exports = authorization;

@@ -1,9 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+import "firebase/firestore";
 
 var firebaseConfig = {
     apiKey: "AIzaSyCLJAKp4OGwF7viAlxnX8i0cW7r8K9Pkww",
@@ -17,4 +14,6 @@ var firebaseConfig = {
   
 firebase.initializeApp(firebaseConfig);
 
-export default firebase;
+const auth = firebase.auth();
+
+export { auth, firebase };
