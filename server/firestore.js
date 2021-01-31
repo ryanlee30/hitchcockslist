@@ -1,7 +1,7 @@
-const admin = require("./firebase/firebase");
+const admin = require("./firebase/admin");
 const db = admin.firestore();
 
-async function getUserData(uid) {
+async function getUserInfo(uid) {
     const usersRef = db.collection("users");
     const userRef = await usersRef.where("uid", "==", uid).get();
     if (userRef.size !== 0) {
@@ -9,17 +9,17 @@ async function getUserData(uid) {
     } else {
         const result = await admin.auth().getUser(uid)
         .then((userRecord) => {
-                let userData = {
+                let userInfo = {
                     firstName: userRecord.displayName.split(" ")[0],
                     lastName: userRecord.displayName.split(" ")[1],
                     uid: uid,
                     created: userRecord.metadata.creationTime
                 }
-                admin.firestore().collection('users').add(userData);
-                return userData;
+                admin.firestore().collection('users').add(userInfo);
+                return { firstName: userInfo.firstName, lastName: userInfo.lastName };
             });
         return result;
     }
 }
 
-module.exports = getUserData;
+module.exports = getUserInfo;

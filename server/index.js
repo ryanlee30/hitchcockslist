@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const authorization = require("./authorization");
-const getUserData = require("./firestore");
+const getUserInfo = require("./firestore");
 
 const app = express();
 app.use(cors());
@@ -9,7 +9,7 @@ app.use(cors());
 app.use("/", authorization);
 
 app.get("/user-info", (request, response) => {
-    getUserData(response.locals.uid).then(result => {
+    getUserInfo(response.locals.uid).then(result => {
         response.send(result);
     });
 })

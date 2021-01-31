@@ -1,4 +1,4 @@
-const admin = require("./firebase/firebase");
+const admin = require("./firebase/admin");
 
 function authorization(request, response, next) {
   const headerToken = request.headers.authorization;
