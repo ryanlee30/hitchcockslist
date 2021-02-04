@@ -16,9 +16,31 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Hitchcock's List</title>
+    <style>
+      .logo {
+        animation: spin 0.5s linear infinite;
+        margin: auto;
+      }
+      .divLoader {
+        height: 95vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
   </head>
-  <body>
+  <body style="background-color: #0F0F0F;">
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root">
+      <div class="divLoader">
+        <div class="logo">
+          <img src="%PUBLIC_URL%/loading.png" />
+        </div>
+      </div>
+    </div>
   </body>
 </html>

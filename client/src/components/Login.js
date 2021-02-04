@@ -1,7 +1,7 @@
 import '../App.css';
-import { React, useState } from "react";
-import { useHistory, Link } from "react-router-dom";
-import { auth, firebase } from "../firebase";
+import { React, useState, useLayoutEffect } from 'react';
+import { useHistory, Link } from 'react-router-dom';
+import { auth, firebase } from '../firebase';
 import { Form } from 'react-bootstrap'
 import GoogleButton from 'react-google-button';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,6 +12,12 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const history = useHistory();
+
+  useLayoutEffect(() => {
+    if (localStorage.getItem("@token")) {
+      history.replace("/home");
+    }
+  }, [history]);
 
   async function googleAuthentication() {
     const provider = new firebase.auth.GoogleAuthProvider();
