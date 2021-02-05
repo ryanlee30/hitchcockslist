@@ -51,13 +51,9 @@ export default function Login() {
       });
   }
 
-  function redirectToSignup() {
-    history.push("/signup")
-  }
-
   return (
       <div style={{paddingBottom: 150}}>
-        <Link className="redirect-btn" style={{textDecoration: 'none', float: 'right'}} onClick={redirectToSignup}>Sign up</Link>
+        <Link to="/signup" className="redirect-btn" style={{textDecoration: 'none', float: 'right'}}>Sign up</Link>
         <br></br>
         <div style={{paddingTop: 100, paddingBottom: 50}}>
           <GoogleButton onClick={googleAuthentication} />
@@ -68,9 +64,9 @@ export default function Login() {
         <Form.Group controlId="formAuthPassword">
           <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
         </Form.Group>
-        <Link className="redirect-btn" style={{textDecoration: 'none'}} onClick={passwordAuthentication}>Log in</Link>
+        <Link to="#" className="redirect-btn" style={{textDecoration: 'none'}} onClick={passwordAuthentication}>Log in</Link>
         <div style={{paddingTop: 15}}>
-          <Link className="forgot-pwd-btn" style={{textDecoration: 'none'}}>Forgot your password?</Link>
+          <Link to="#" className="forgot-pwd-btn" style={{textDecoration: 'none'}}>Forgot your password?</Link>
         </div>
       </div>
   );

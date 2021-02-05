@@ -31,10 +31,6 @@ export default function Signup() {
         });
   }
 
-  function redirectToLogin() {
-    history.push("/login")
-  }
-
   function addUser(uid) {
     const db = firebase.firestore();
     db.collection('users').add({
@@ -48,7 +44,7 @@ export default function Signup() {
   return (
       <div style={{paddingBottom: 150}}>
       <div style={{paddingBottom: 100}}>
-          <Link className="redirect-btn" style={{textDecoration: 'none', float: 'right'}} onClick={redirectToLogin}>Log in</Link>
+          <Link to="/login" className="redirect-btn" style={{textDecoration: 'none', float: 'right'}}>Log in</Link>
       </div>
       <br></br>
       <Form.Group controlId="formSignUpFirstName">
@@ -63,7 +59,7 @@ export default function Signup() {
       <Form.Group controlId="formSignUpPassword">
         <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
       </Form.Group>
-      <Link className="redirect-btn" style={{textDecoration: 'none'}} onClick={createUser}>Sign up</Link>
+      <Link to="#" className="redirect-btn" style={{textDecoration: 'none'}} onClick={createUser}>Sign up</Link>
       </div>
   );
 }
