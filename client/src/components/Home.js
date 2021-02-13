@@ -1,6 +1,7 @@
+import '../App.css';
 import { React, useLayoutEffect, useState } from 'react';
 import SignOutFirstModal from './SignOutFirstModal';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, Link } from 'react-router-dom';
 
 export default function Home() {
   const history = useHistory();
@@ -17,7 +18,21 @@ export default function Home() {
 
     return (
     <div>
-      <p>Home</p>
+      <div className="banner">
+        <div className="account-menu">
+          <div className="account-name">Place Holder</div>
+        </div>
+      </div>
+      <div className="top-banner">
+        <div className="new-review">
+          <Link to="/review">New review</Link>
+        </div>
+      </div>
+      <div className="catalogue">
+        <div className="movie">
+          1
+        </div>
+      </div>
       <SignOutFirstModal show={modalShow} onHide={() => {setModalShow(false); history.replace("/home")}}/>
     </div>
     )

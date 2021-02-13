@@ -1,10 +1,11 @@
-import { React, useState, useEffect } from 'react';
+import '../App.css';
+import { React, useState, useLayoutEffect } from 'react';
 
 export default function User() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     async function loadUserData() {
       const response = await fetch("http://localhost:4000/user-info", {
         headers: {
@@ -20,8 +21,11 @@ export default function User() {
 
     return (
     <div>
-      <p>{firstName}</p>
-      <p>{lastName}</p>
+      <div className="banner">
+        <div className="account-menu">
+          <div className="account-name">{firstName} {lastName}</div>
+        </div>
+      </div>
     </div>
     )
 }
