@@ -2,6 +2,7 @@ import '../App.css';
 import { React, useLayoutEffect, useState } from 'react';
 import SignOutFirstModal from './SignOutFirstModal';
 import { useHistory, useLocation, Link } from 'react-router-dom';
+import new_review from '../imgs/new_review.png'
 
 export default function Home() {
   const history = useHistory();
@@ -24,16 +25,14 @@ export default function Home() {
         </div>
       </div>
       <div className="top-banner">
-        <div className="new-review">
-          <Link to="/review">New review</Link>
-        </div>
+        <Link to="/review"><img className="new-review" src={new_review} alt="New review"/></Link>
       </div>
       <div className="catalogue">
         <div className="movie">
           1
         </div>
       </div>
-      <SignOutFirstModal show={modalShow} onHide={() => {setModalShow(false); history.replace("/home")}}/>
+      <SignOutFirstModal show={modalShow} onHide={() => {setModalShow(false)}}/>
     </div>
     )
 }

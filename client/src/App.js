@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Home from './components/Home';
 import User from './components/User';
+import NewReview from './components/NewReview';
 
 export default class App extends Component {
   render() {
@@ -33,6 +34,12 @@ export default class App extends Component {
                       <Redirect to="/login"/>
                     )
                   )}/>
+                  <Route exact path={"/review"}>
+                    <Redirect to="/review/n"/>
+                  </Route>
+                  <Route path={"/review/n"}>
+                    <NewReview />
+                  </Route>
               </Switch>
         </BrowserRouter>
       </div>

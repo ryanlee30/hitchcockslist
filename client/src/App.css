@@ -8,6 +8,11 @@ body {
   font-family: Calibri;
 }
 
+h5 {
+  color: white;
+  font-family: Calibri;
+}
+
 .frontPageTitle {
   padding-top: 35vh;
   padding-left: 5vw;
@@ -82,31 +87,29 @@ body {
 	bottom: 0;
   border-top-left-radius: 15px;
   font-size: 17px;
-  z-index: 0;
 }
 
 .account-name {
-  padding: 11px 10px;
+  padding: 11px;
   margin: 0;
 }
 
 .new-review {
-  width: 150px;
-  height: 200px;
-  background-color: #0479D2;
+  width: 135px;
+  height: 170px;
 }
 
 .top-banner {
   padding-left: 75px;
   padding-top: 50px;
-  height: 300px;
+  height: 270px;
   width: calc(100vw - 235px);
 }
 
 .catalogue {
   position: absolute;
   padding-left: 55px;
-  top: 300px;
+  top: 270px;
   width: calc(100vw - 235px);
   display: flex;
   flex-wrap: wrap;
@@ -115,8 +118,47 @@ body {
 
 .movie {
   margin: 20px;
-  width: 150px;
-  height: 200px;
+  width: 135px;
+  height: 170px;
   background-color: grey;
   border: 2px solid red;
+}
+
+.review-body {
+  width: calc(100vw - 235px);
+  height: 100vh;
+  padding: 50px 50px 0 50px;
+}
+
+.review-console {
+  width: calc(100vw - 235px - 100px);
+  height: calc(100vh - 50px);
+  background-color: #222222;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.review-console-header-container {
+  padding: 40px;
+}
+
+.review-console-film-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-top: 20px;
+}
+
+#formFilmInfo {
+  margin-right: 20px;
+  border: 0;
+  border-radius: 0;
+  background-color: #363636;
+  width: 15vw;
+  min-width: 250px;
+  color: white;
+}
+
+#formFilmInfo::placeholder {
+  color: #A7A7A7;
 }
