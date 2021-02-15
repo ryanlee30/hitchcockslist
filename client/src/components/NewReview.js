@@ -3,7 +3,7 @@ import { React, useLayoutEffect, useState } from 'react';
 import SignOutFirstModal from './SignOutFirstModal';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Form, Row, Col } from 'react-bootstrap';
-import upload_artwork from '../imgs/upload_artwork.png';
+import new_review from '../imgs/new_review.png';
 import Quill from 'quill';
 
 export default function NewReview() {
@@ -50,7 +50,7 @@ export default function NewReview() {
         </div>
         <input type="file" id="uploadFilmArtwork" onChange={e => setFilmArtwork(e.target.value)} hidden/>
         <label for="uploadFilmArtwork" className="uploadFilmArtworkLabel">
-          <img src={upload_artwork} className="now-showing"></img>
+          <img src={new_review} className="now-showing"></img>
           <div style={{width: "185px", height: "232px", backgroundColor: 'blue', position: "absolute", zIndex: 10, marginLeft: "11px", marginTop: "10px"}} hidden></div>
         </label>
         <div className="account-menu">
