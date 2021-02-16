@@ -55,8 +55,18 @@ h5 {
   color: white;
 }
 
+.redirect-btn-submit {
+  font-family: Calibri;
+  color: white;
+  font-size: 22px;
+}
+
 .redirect-btn:hover {
   color: #004f99;
+}
+
+.redirect-btn-submit:hover {
+  color: #A7A7A7;
 }
 
 .forgot-pwd-btn {
@@ -72,6 +82,14 @@ h5 {
 .banner {
   position: absolute;
   width: 235px;
+  right: 0;
+  height: 100vh;
+}
+
+.review-banner {
+  position: absolute;
+  width: 385px;
+  padding-left: 100px;
   right: 0;
   height: 100vh;
 }
@@ -126,12 +144,14 @@ h5 {
 }
 
 .review-body {
-  width: calc(100vw - 235px);
+  width: calc(100vw - 235px - 150px);
   height: 100vh;
-  padding: 50px 150px 0 150px;
+  padding: 50px 0 0 150px;
 }
 
 .review-console {
+  padding-left: 40px;
+  padding-right: 40px;
   width: calc(100vw - 235px - 100px - 200px);
   height: calc(100vh - 50px);
   background-color: #222222;
@@ -140,7 +160,12 @@ h5 {
 }
 
 .review-console-header-container {
-  padding: 40px;
+  padding: 40px 40px 0 40px;
+}
+
+.review-console-header-head {
+  display: flex;
+  justify-content: space-between;
 }
 
 .review-console-film-info {
@@ -152,6 +177,7 @@ h5 {
 
 #formFilmInfo {
   margin-right: 20px;
+  margin-bottom: 15px;
   border: 0;
   border-radius: 0;
   background-color: #363636;
@@ -168,38 +194,44 @@ h5 {
   outline: none;
 }
 
-.uploadFilmArtworkLabel {
-  position: relative;
-  width: 185px;
-  height: 232px;
-  margin-top: 20px;
-  cursor: pointer;
-  z-index: 0;
-}
-
-.now-showing {
-  position: absolute;
-  width: 185px;
-  height: 232px;
-  z-index: 1;
-}
-
 .artwork-label {
   margin-top: 50px;
   color: white;
 }
 
+.filepond--root {
+  margin-top: 20px;
+  width: 185px;
+}
+
+.filepond--item {
+  background-color: #363636;
+}
+
+.filepond--root .filepond--panel-root {
+  background-color: #363636;
+}
+
+.filepond--root .filepond--drop-label {
+  color: rgb(212, 212, 212);
+}
+
+.filepond--root .filepond--drip-blob {
+  background-color: rgb(212, 212, 212);
+}
+
 #text-editor {
-  margin: 0 20px 40px 40px;
-  width: calc(100vw - 285px - 50px - 80px - 200px);
-  height: calc(100vh - 236px - 60px);
+  margin: 0 30px 40px 40px;
+  width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+  height: calc(100vh - 236px - 16px);
+  position: fixed;
 }
 
 .ql-toolbar.ql-snow {
   margin: 0 40px 0 40px;
-  width: calc(100vw - 285px - 50px - 80px - 200px);
+  width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
   background-color: #A7A7A7;
-  border-radius: 0 15px 0 0;
+  border-radius: 5px 5px 0 0;
   border: 0;
 }
 
