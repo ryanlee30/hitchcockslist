@@ -7,6 +7,7 @@ import Signup from './components/Signup';
 import Home from './components/Home';
 import User from './components/User';
 import NewReview from './components/NewReview';
+import ViewReview from './components/ViewReview';
 
 export default class App extends Component {
   render() {
@@ -39,6 +40,9 @@ export default class App extends Component {
                   </Route>
                   <Route path={"/review/n"}>
                     <NewReview />
+                  </Route>
+                  <Route path={"/review/v/test"}>
+                    <ViewReview />
                   </Route>
               </Switch>
         </BrowserRouter>

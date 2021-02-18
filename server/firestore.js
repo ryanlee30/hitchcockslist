@@ -22,4 +22,14 @@ async function getUserInfo(uid) {
     }
 }
 
+function getTestReview(uid, filmTitle) {
+    const reviewsRef = db.collection("reviews");
+    const reviewRef = await reviewsRef.where("uid", "==", uid, "&&", "title", "==", filmTitle).get();
+    if (userRef.size !== 0) {
+        return { filmTitle: reviewRef.docs[0].data().title, filmDirector: reviewRef.docs[0].data().director, content: reviewRef.docs[0].data().content };
+    } else {
+        console.log("Cannot find review under that uid or title");
+    }
+}
+
 module.exports = getUserInfo;

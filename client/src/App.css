@@ -170,14 +170,15 @@ h5 {
 
 .review-console-film-info {
   display: flex;
+  padding-top: 20px;
+  margin-bottom: 15px;
   flex-direction: row;
   justify-content: flex-start;
-  padding-top: 20px;
+  flex-wrap: wrap;
 }
 
-#formFilmInfo {
+#formFilmTitle, #formFilmDirector {
   margin-right: 20px;
-  margin-bottom: 15px;
   border: 0;
   border-radius: 0;
   background-color: #363636;
@@ -186,11 +187,11 @@ h5 {
   color: white;
 }
 
-#formFilmInfo::placeholder {
+#formFilmTitle::placeholder, #formFilmDirector::placeholder {
   color: #A7A7A7;
 }
 
-#formFilmInfo::focus {
+#formFilmTitle::focus, #formFilmDirector::focus {
   outline: none;
 }
 
@@ -206,6 +207,10 @@ h5 {
 
 .filepond--item {
   background-color: #363636;
+}
+
+.filepond--credits {
+  display: none;
 }
 
 .filepond--root .filepond--panel-root {

@@ -14,4 +14,10 @@ app.get("/user-info", (request, response) => {
     });
 })
 
+app.get("/test-review", (request, response) => {
+    getTestReview(response.locals.uid, response.locals.filmTitle).then(result => {
+        response.send(result);
+    })
+})
+
 app.listen(4000, () => console.log("The server is running at PORT 4000"));
