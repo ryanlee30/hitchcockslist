@@ -6,6 +6,7 @@ import SignOutFirstModal from './SignOutFirstModal';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 import Quill from 'quill';
+import needle from 'needle';
 
 export default function ViewReview() {
   const history = useHistory();
@@ -23,6 +24,18 @@ export default function ViewReview() {
     } else {
       setModalShow(false);
     }
+
+    async function fetchReviews() {
+      needle.get("http://localhost:4000/test-review?uid=123456789&filmTitle=Interstellar", function(error, response) {
+        if (!error && response.statusCode === 200) {
+          console.log(response.body);
+        }
+      });
+      // const reviewData = await response.json();
+      // setFilmTitle(reviewData.filmTitle);
+      // setFilmDirector(reviewData.filmDirector);
+    }
+    fetchReviews();
 
     var toolbarOptions = [
       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],

@@ -18,7 +18,10 @@ function authorization(request, response, next) {
       response.locals.uid = decodedToken.uid;
       next();
     })
-    .catch(() => response.send({ message: "Could not authorize" }).status(403));
+    .catch(() => {
+      response.send({ message: "Could not authorize" }).status(403);
+      console.log("Could not authorize");
+    });
 }
 
 module.exports = authorization;

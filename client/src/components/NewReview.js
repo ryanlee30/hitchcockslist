@@ -48,7 +48,7 @@ export default function NewReview() {
     
     var editor = new Quill("#text-editor", options);
     setReviewEditor(editor);
-  }, [location])
+  }, [])
 
   function persistContent() {
     var editor = reviewEditor;
