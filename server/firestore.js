@@ -22,14 +22,14 @@ async function getUserInfo(uid) {
     }
 }
 
-async function getTestReview(uid, filmTitle) {
-    const reviewsRef = db.collection("reviews");
-    const reviewRef = await reviewsRef.where("uid", "==", uid).where("title", "==", filmTitle).get();
-    if (reviewRef.size !== 0) {
-        return { filmTitle: reviewRef.docs[0].data().title, filmDirector: reviewRef.docs[0].data().director, content: reviewRef.docs[0].data().content };
+async function getReview(uid, filmTitle) {
+    const reviewsDBRef = db.collection("reviews");
+    const reviewsRef = await reviewsDBRef.where("uid", "==", uid).where("title", "==", filmTitle).get();
+    if (reviewsRef.size !== 0) {
+        return { filmTitle: reviewsRef.docs[0].data().title, filmDirector: reviewsRef.docs[0].data().director, content: reviewsRef.docs[0].data().content, reviewDate: reviewsRef.docs[0].data().created };
     } else {
         console.log("Cannot find review under that uid or title");
     }
 }
 
-module.exports = { getUserInfo, getTestReview };
+module.exports = { getUserInfo, getReview };

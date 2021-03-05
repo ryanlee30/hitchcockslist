@@ -7,6 +7,8 @@ import { useHistory, useLocation, Link } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 import Quill from 'quill';
 import needle from 'needle';
+import { firebase } from '../firebase';
+import date from 'date-and-time';
 
 export default function ViewReview() {
   const history = useHistory();
@@ -15,6 +17,7 @@ export default function ViewReview() {
   const [filmTitle, setFilmTitle] = useState("");
   const [filmDirector, setFilmDirector] = useState("");
   const [filmArtwork, setFilmArtwork] = useState("");
+  const [reviewDate, setReviewDate] = useState("");
 
   useLayoutEffect(() => {
     if (location.state !== undefined) {
@@ -31,15 +34,17 @@ export default function ViewReview() {
       }
     };
     
-    var editor = new Quill("#review-block", options);
+    var editor = new Quill("#review-content", options);
 
     async function fetchReviews() {
-      needle.get("http://localhost:4000/test-review?uid=123456789&filmTitle=Memento", function(error, response) {
+      needle.get("http://localhost:4000/fetch-review?uid=123456789&filmTitle=Parasite", function(error, response) {
         if (!error && response.statusCode === 200) {
-          console.log(response.body);
           const reviewData = response.body;
           setFilmTitle(reviewData.filmTitle);
           setFilmDirector(reviewData.filmDirector);
+          // here we're going to have a list of review class objects
+          // get rid of setReviewDate when above is finished
+          setReviewDate(date.format(new Date(reviewData.reviewDate), "MMMM DD, YYYY"));
           editor.setContents(JSON.parse(reviewData.content).ops);
         }
       });
@@ -66,7 +71,10 @@ export default function ViewReview() {
               <h5>by&nbsp;&nbsp;{filmDirector}</h5>
             </div>
           </div>
-          <div id="review-block"></div>
+          <div className="review-reviews">
+            <div id="review-content"></div>
+            <div className="review-date"><p>{reviewDate}</p></div>
+          </div>
         </div>
       </div>
       <SignOutFirstModal show={modalShow} onHide={() => {setModalShow(false)}}/>

@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const authorization = require("./authorization");
-const { getUserInfo, getTestReview } = require("./firestore");
+const { getUserInfo, getReview } = require("./firestore");
 
 const app = express();
 app.use(cors());
@@ -14,8 +14,8 @@ app.get("/user-info", (request, response) => {
     });
 })
 
-app.get("/test-review", (request, response) => {
-    getTestReview(request.query.uid, request.query.filmTitle).then(result => {
+app.get("/fetch-review", (request, response) => {
+    getReview(request.query.uid, request.query.filmTitle).then(result => {
         response.send(result);
     })
 })

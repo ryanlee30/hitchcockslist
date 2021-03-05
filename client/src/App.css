@@ -13,6 +13,11 @@ h5 {
   font-family: Calibri;
 }
 
+p {
+  color: #CDCDCD;
+  font-family: Calibri;
+}
+
 .frontPageTitle {
   padding-top: 35vh;
   padding-left: 5vw;
@@ -247,11 +252,18 @@ h5 {
   font-size: 18px;
 }
 
-#review-block {
-  margin: 25px 30px 40px 40px;
+#review-content {
   width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
   height: auto;
-  position: fixed;
-  cursor: crosshair;
   border-radius: 5px 5px 5px 0;
+}
+
+.review-reviews {
+  margin: 20px 0 0 40px;
+  width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+}
+
+.review-date {
+  margin-top: 5px;
+  float: right;
 }

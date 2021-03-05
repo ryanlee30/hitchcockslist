@@ -22,7 +22,6 @@ export default function NewReview() {
   const [filmTitle, setFilmTitle] = useState("");
   const [filmDirector, setFilmDirector] = useState("");
   const [filmArtwork, setFilmArtwork] = useState("");
-  const [reviewContent, setReviewContent] = useState({});
   const [reviewEditor, setReviewEditor] = useState({});
 
   useLayoutEffect(() => {
@@ -59,7 +58,7 @@ export default function NewReview() {
       title: filmTitle,
       director: filmDirector,
       content: JSON.stringify(editor.getContents()),
-      created: firebase.firestore.Timestamp.now(),
+      created: firebase.firestore.Timestamp.now().toDate().toString(),
       uid: 123456789
     });
   }
