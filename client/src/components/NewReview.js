@@ -41,6 +41,7 @@ export default function NewReview() {
 
     var options = {
       theme: "snow",
+      placeholder: "Once upon a Time in Hollywood was...",
       modules: {
         toolbar: toolbarOptions
       }

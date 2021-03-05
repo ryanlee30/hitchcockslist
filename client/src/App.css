@@ -246,3 +246,12 @@ h5 {
   border: 0;
   font-size: 18px;
 }
+
+#review-block {
+  margin: 25px 30px 40px 40px;
+  width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+  height: auto;
+  position: fixed;
+  cursor: crosshair;
+  border-radius: 5px 5px 5px 0;
+}

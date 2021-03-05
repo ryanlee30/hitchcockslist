@@ -15,8 +15,6 @@ export default function ViewReview() {
   const [filmTitle, setFilmTitle] = useState("");
   const [filmDirector, setFilmDirector] = useState("");
   const [filmArtwork, setFilmArtwork] = useState("");
-  const [reviewContent, setReviewContent] = useState({});
-  const [reviewEditor, setReviewEditor] = useState({});
 
   useLayoutEffect(() => {
     if (location.state !== undefined) {
@@ -25,35 +23,30 @@ export default function ViewReview() {
       setModalShow(false);
     }
 
-    async function fetchReviews() {
-      needle.get("http://localhost:4000/test-review?uid=123456789&filmTitle=Interstellar", function(error, response) {
-        if (!error && response.statusCode === 200) {
-          console.log(response.body);
-        }
-      });
-      // const reviewData = await response.json();
-      // setFilmTitle(reviewData.filmTitle);
-      // setFilmDirector(reviewData.filmDirector);
-    }
-    fetchReviews();
-
-    var toolbarOptions = [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      ['bold', 'italic', 'underline'],
-      [{ 'align': [] }],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }]
-    ];
-
     var options = {
       theme: "snow",
+      readOnly: true,
       modules: {
-        toolbar: toolbarOptions
+        toolbar: false
       }
     };
     
-    var editor = new Quill("#text-editor", options);
-    setReviewEditor(editor);
-  }, [location])
+    var editor = new Quill("#review-block", options);
+
+    async function fetchReviews() {
+      needle.get("http://localhost:4000/test-review?uid=123456789&filmTitle=Memento", function(error, response) {
+        if (!error && response.statusCode === 200) {
+          console.log(response.body);
+          const reviewData = response.body;
+          setFilmTitle(reviewData.filmTitle);
+          setFilmDirector(reviewData.filmDirector);
+          editor.setContents(JSON.parse(reviewData.content).ops);
+        }
+      });
+    }
+
+    fetchReviews();
+  }, [])
 
     return (
     <div>
@@ -70,11 +63,10 @@ export default function ViewReview() {
           <div className="review-console-header-container">
             <div className="review-console-header-head">
               <h5>{filmTitle}</h5>
-              <h5>by {filmDirector}</h5>
-            </div>
-            <div className="review-console-film-info">
+              <h5>by&nbsp;&nbsp;{filmDirector}</h5>
             </div>
           </div>
+          <div id="review-block"></div>
         </div>
       </div>
       <SignOutFirstModal show={modalShow} onHide={() => {setModalShow(false)}}/>
