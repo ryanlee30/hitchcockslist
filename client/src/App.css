@@ -8,13 +8,8 @@ body {
   font-family: Calibri;
 }
 
-h5 {
+h5, h4, p {
   color: white;
-  font-family: Calibri;
-}
-
-p {
-  color: #CDCDCD;
   font-family: Calibri;
 }
 
@@ -140,12 +135,36 @@ p {
   justify-content: flex-start;
 }
 
-.movie {
+.film {
   margin: 20px;
   width: 135px;
-  height: 170px;
+}
+
+.film:hover .filmArtwork, .film:hover .filmTitle, .film:hover .filmDirector{
+  opacity: 0.7;
+}
+
+.film:hover {
+  cursor: pointer;
+}
+
+.filmTitle {
+  text-align: left;
+  word-break: break-all;
+  margin-bottom: 15px;
+}
+
+.filmArtwork {
+  width: 135px;
+  height: 200px;
   background-color: grey;
-  border: 2px solid red;
+}
+
+.filmDirector {
+  margin-top: 15px;
+  margin-bottom: 0;
+  text-align: right;
+  word-break: break-all;
 }
 
 .review-body {
@@ -205,6 +224,11 @@ p {
   color: white;
 }
 
+.artwork-content {
+  margin-top: 20px;
+  width: 185px;
+}
+
 .filepond--root {
   margin-top: 20px;
   width: 185px;
@@ -247,23 +271,39 @@ p {
 
 .ql-container.ql-snow {
   color: white;
-  background-color: #5F5F5F;
+  background-color: #343434;
   border: 0;
   font-size: 18px;
 }
 
-#review-content {
-  width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
-  height: auto;
-  border-radius: 5px 5px 5px 0;
-}
-
 .review-reviews {
-  margin: 20px 0 0 40px;
+  margin-left: 40px;
   width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
 }
 
-.review-date {
+.review-review {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.content {
+  width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+  padding: 12px 15px;
+  border-radius: 7px 7px 0px 7px;
+  background-color: #343434;
+  color: white;
+}
+
+.content * {
+  margin: 0;
+}
+
+.date {
   margin-top: 5px;
   float: right;
+}
+
+.date * {
+  margin: 0;
+  color: #CDCDCD;
 }

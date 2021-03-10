@@ -2,62 +2,58 @@ import '../App.css';
 import 'filepond/dist/filepond.min.css'
 
 import { React, useLayoutEffect, useState } from 'react';
-import SignOutFirstModal from './SignOutFirstModal';
 import { useHistory, useLocation, Link } from 'react-router-dom';
-import { Form } from 'react-bootstrap';
-import Quill from 'quill';
 import needle from 'needle';
 import { firebase } from '../firebase';
-import date from 'date-and-time';
+import Reviews from '../controllers/Reviews';
 
 export default function ViewReview() {
   const history = useHistory();
   const location = useLocation();
-  const [modalShow, setModalShow] = useState(false);
   const [filmTitle, setFilmTitle] = useState("");
   const [filmDirector, setFilmDirector] = useState("");
   const [filmArtwork, setFilmArtwork] = useState("");
-  const [reviewDate, setReviewDate] = useState("");
+  const [filmReviews, setFilmReviews] = useState([]);
+  const [filmId, setFilmId] = useState("");
 
   useLayoutEffect(() => {
-    if (location.state !== undefined) {
-      setModalShow(location.state.modalShow);
-    } else {
-      setModalShow(false);
-    }
-
-    var options = {
-      theme: "snow",
-      readOnly: true,
-      modules: {
-        toolbar: false
-      }
-    };
-    
-    var editor = new Quill("#review-content", options);
-
     async function fetchReviews() {
-      needle.get("http://localhost:4000/fetch-review?uid=123456789&filmTitle=Parasite", function(error, response) {
+      const options = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("@token"),
+        }
+      }
+      needle.get("http://localhost:4000/fetch-reviews?filmId="+ location.state.filmId, options, function(error, response) {
         if (!error && response.statusCode === 200) {
           const reviewData = response.body;
           setFilmTitle(reviewData.filmTitle);
           setFilmDirector(reviewData.filmDirector);
-          // here we're going to have a list of review class objects
-          // get rid of setReviewDate when above is finished
-          setReviewDate(date.format(new Date(reviewData.reviewDate), "MMMM DD, YYYY"));
-          editor.setContents(JSON.parse(reviewData.content).ops);
+          setFilmArtwork(reviewData.filmArtwork);
+          setFilmReviews(new Reviews(reviewData.reviews).getReviews());
         }
       });
     }
 
-    fetchReviews();
+    if (location.state) {
+      fetchReviews();
+    }
   }, [])
+
+  // called by both add and remove review fn
+  function persistContent() {
+    const db = firebase.firestore();
+    db.collection('films').doc('PnzvUAvgdctHFouQjWfe').update({
+      reviews: "some shit here"
+    });
+  }
 
     return (
     <div>
       <div className="review-banner">
         <div className="artwork-label">
           Poster | Artwork
+          <br/>
+          <img className="artwork-content" src={filmArtwork}/>
         </div>
         <div className="account-menu">
           <div className="account-name">Place Holder</div>
@@ -67,17 +63,20 @@ export default function ViewReview() {
         <div className="review-console">
           <div className="review-console-header-container">
             <div className="review-console-header-head">
-              <h5>{filmTitle}</h5>
+              <h4>{filmTitle}</h4>
               <h5>by&nbsp;&nbsp;{filmDirector}</h5>
             </div>
           </div>
           <div className="review-reviews">
-            <div id="review-content"></div>
-            <div className="review-date"><p>{reviewDate}</p></div>
+            {filmReviews.map((review, i) => (
+              <div className="review-review" key={i}>
+                  <div className="content" dangerouslySetInnerHTML={{ __html: review.review }} />
+                  <div className="date"><p>{review.date}</p></div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
-      <SignOutFirstModal show={modalShow} onHide={() => {setModalShow(false)}}/>
     </div>
     )
 }
