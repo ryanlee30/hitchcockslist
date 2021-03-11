@@ -53,12 +53,11 @@ export default function Home() {
       </div>
       <div className="catalogue">
         {films.map((film, i) => (
-              <div className="film" key={i} onClick={() => {goToViewReview(film.filmId)}}>
-                  <div className="filmTitle"><p>{film.filmTitle}</p></div>
-                  <img className="filmArtwork" src={film.filmArtwork}/>
-                  <div className="filmDirector"><p>{film.filmDirector}</p></div>
-              </div>
-            ))}
+          <div className="film" key={i} onClick={() => {goToViewReview(film.filmId)}}>
+              <div className="filmTitle"><p>{film.filmTitle}</p></div>
+              <img className="filmArtwork" src={film.filmArtwork}/>
+              <div className="filmDirector"><p>{film.filmDirector}</p></div>
+          </div>))}
       </div>
       <SignOutFirstModal show={modalShow} onHide={() => {setModalShow(false); history.replace("/home", { modalShow: false })}}/>
     </div>

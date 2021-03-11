@@ -3,12 +3,20 @@
   src: local('Hitchcock'), url(./fonts/Hitchcock.ttf) format('truetype');
 }
 
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-select: none;
+}
+
 body {
   background-color: #0F0F0F !important;
   font-family: Calibri;
 }
 
-h5, h4, p {
+h5, h4, p{
   color: white;
   font-family: Calibri;
 }
@@ -16,7 +24,7 @@ h5, h4, p {
 .frontPageTitle {
   padding-top: 35vh;
   padding-left: 5vw;
-  font-size: calc(20px + 8vmin);
+  font-size: calc(12px + 8vmin);
 }
 
 .left-panel {
@@ -288,10 +296,11 @@ h5, h4, p {
 
 .content {
   width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
-  padding: 12px 15px;
+  padding: 20px;
   border-radius: 7px 7px 0px 7px;
   background-color: #343434;
   color: white;
+  font-size: 18px;
 }
 
 .content * {
@@ -306,4 +315,27 @@ h5, h4, p {
 .date * {
   margin: 0;
   color: #CDCDCD;
+}
+
+.review-add-review {
+  width: 64px;
+  height: 64px;
+  background-color: #282828;
+  border-radius: 25px;
+  position: relative;
+  margin: auto;
+}
+
+.plus-sign {
+  width: 24px;
+  position: relative;
+  margin: 20px;
+}
+
+.review-add-review:hover{
+  cursor: pointer;
+}
+
+.review-add-review:hover, .review-add-review:hover .plus-sign {
+  opacity: 0.5;
 }

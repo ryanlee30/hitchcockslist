@@ -6,6 +6,7 @@ import { useHistory, useLocation, Link } from 'react-router-dom';
 import needle from 'needle';
 import { firebase } from '../firebase';
 import Reviews from '../controllers/Reviews';
+import add_review from '../imgs/add_review.png'
 
 export default function ViewReview() {
   const history = useHistory();
@@ -74,6 +75,9 @@ export default function ViewReview() {
                   <div className="date"><p>{review.date}</p></div>
               </div>
             ))}
+          </div>
+          <div className="review-add-review">
+            <img className="plus-sign" src={add_review} alt="add_review"/>
           </div>
         </div>
       </div>
