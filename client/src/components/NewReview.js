@@ -125,7 +125,9 @@ export default function NewReview() {
               </Form.Group>
             </div>
           </div>
-          <div id="text-editor">
+          <div className="text-editor-container">
+            <div id="text-editor">
+            </div>
           </div>
         </div>
       </div>

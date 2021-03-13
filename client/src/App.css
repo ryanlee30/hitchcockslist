@@ -14,6 +14,12 @@ img {
 body {
   background-color: #0F0F0F !important;
   font-family: Calibri;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 h5, h4, p{
@@ -95,7 +101,7 @@ h5, h4, p{
 }
 
 .review-banner {
-  position: absolute;
+  position: fixed;
   width: 385px;
   padding-left: 100px;
   right: 0;
@@ -189,6 +195,9 @@ h5, h4, p{
   background-color: #222222;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
+  height: auto;
+  min-height: calc(100vh - 50px);
+  padding-bottom: 40px;
 }
 
 .review-console-header-container {
@@ -262,15 +271,17 @@ h5, h4, p{
   background-color: rgb(212, 212, 212);
 }
 
+.text-editor-container {
+  margin: 0 40px 40px 40px;
+}
+
 #text-editor {
-  margin: 0 30px 40px 40px;
   width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
   height: calc(100vh - 236px - 16px);
   position: fixed;
 }
 
 .ql-toolbar.ql-snow {
-  margin: 0 40px 0 40px;
   width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
   background-color: #A7A7A7;
   border-radius: 5px 5px 0 0;
@@ -338,4 +349,34 @@ h5, h4, p{
 
 .review-add-review:hover, .review-add-review:hover .plus-sign {
   opacity: 0.5;
+}
+
+#add-review-editor {
+  width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+  height: 300px;
+}
+
+.add-review-editor-btn {
+  cursor: pointer;
+}
+
+.add-review-editor-btn:hover {
+  opacity: 0.5;
+}
+
+.add-review-editor-btn-container {
+  margin-top: 10px;
+	color: white;
+  font-size: 18px;
+  display: flex;
+  justify-content: flex-end;
+  flex-flow: row;
+}
+
+.ql-align-center {
+  text-align: center;
+}
+
+.ql-align-right {
+  text-align: right;
 }

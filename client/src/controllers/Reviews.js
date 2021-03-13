@@ -6,6 +6,11 @@ export default class Reviews {
         this.reviews = reviews;
     }
 
+    getReviewsRawParsed() {
+        let parsed = JSON.parse(this.reviews).reviews;
+        return parsed;
+    }
+
     getReviews() {
         let parsed = JSON.parse(this.reviews).reviews;
         let reviews = [];
@@ -22,8 +27,15 @@ export default class Reviews {
 
     // to be used in ViewReviews.js
     addReview(review) {
-        // returns the JSON string form of new JS array of review objects
-        return JSON.stringify(this.getReviews().push(review));
+        let updateReviews = this.getReviewsRawParsed();
+        updateReviews.push({
+            review: review,
+            date: new Date().toLocaleString()
+        });
+        let reviews = {
+            reviews: updateReviews
+        }
+        return JSON.stringify(reviews);
     }
 
     // to be used in ViewReviews.js

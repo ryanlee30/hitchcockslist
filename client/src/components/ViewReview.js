@@ -7,6 +7,7 @@ import needle from 'needle';
 import { firebase } from '../firebase';
 import Reviews from '../controllers/Reviews';
 import add_review from '../imgs/add_review.png'
+import Quill from 'quill';
 
 export default function ViewReview() {
   const history = useHistory();
@@ -15,7 +16,10 @@ export default function ViewReview() {
   const [filmDirector, setFilmDirector] = useState("");
   const [filmArtwork, setFilmArtwork] = useState("");
   const [filmReviews, setFilmReviews] = useState([]);
-  const [filmId, setFilmId] = useState("");
+  const [filmReviewsRaw, setFilmReviewsRaw] = useState("");
+  const [showEditor, setShowEditor] = useState(false);
+  const [reviewEditor, setReviewEditor] = useState({});
+  const [showAddBtn, setShowAddBtn] = useState(true);
 
   useLayoutEffect(() => {
     async function fetchReviews() {
@@ -30,22 +34,55 @@ export default function ViewReview() {
           setFilmTitle(reviewData.filmTitle);
           setFilmDirector(reviewData.filmDirector);
           setFilmArtwork(reviewData.filmArtwork);
+          setFilmReviewsRaw(reviewData.reviews);
           setFilmReviews(new Reviews(reviewData.reviews).getReviews());
         }
       });
     }
 
-    if (location.state) {
-      fetchReviews();
+    fetchReviews();
+
+    if (showEditor) {
+      let toolbarOptions = [
+        [{ 'header': [3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline'],
+        [{ 'align': [] }],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }]
+      ];
+  
+      let options = {
+        theme: "snow",
+        modules: {
+          toolbar: toolbarOptions
+        }
+      };
+      
+      let editor = new Quill("#add-review-editor", options);
+      setReviewEditor(editor);
     }
-  }, [])
+  }, [showEditor])
 
   // called by both add and remove review fn
   function persistContent() {
+    let editor = reviewEditor;
+    let updateReviews = new Reviews(filmReviewsRaw);
     const db = firebase.firestore();
-    db.collection('films').doc('PnzvUAvgdctHFouQjWfe').update({
-      reviews: "some shit here"
+    db.collection('films').doc(location.state.filmId).update({
+      reviews: updateReviews.addReview(editor.getContents())
+    }).then(() => {
+      setShowEditor(false);
+      setShowAddBtn(true);
     });
+  }
+
+  function displayEditor() {
+    setShowEditor(true);
+    setShowAddBtn(false);
+  }
+
+  function hideEditor() {
+    setShowEditor(false);
+    setShowAddBtn(true);
   }
 
     return (
@@ -76,9 +113,20 @@ export default function ViewReview() {
               </div>
             ))}
           </div>
-          <div className="review-add-review">
-            <img className="plus-sign" src={add_review} alt="add_review"/>
-          </div>
+          { showEditor ?
+            <div className ="text-editor-container">
+              <div id="add-review-editor"></div>
+              <div className="add-review-editor-btn-container">
+                <div className="add-review-editor-btn" onClick={hideEditor}>Cancel</div>&nbsp;&nbsp;&nbsp;&nbsp;
+                <div className="add-review-editor-btn" onClick={persistContent}>Submit</div>
+              </div>
+            </div>
+            : null }
+          { showAddBtn ?
+            <div className="review-add-review" onClick={displayEditor}>
+              <img className="plus-sign" src={add_review} alt="add_review"/>
+            </div>
+            : null}
         </div>
       </div>
     </div>
