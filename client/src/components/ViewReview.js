@@ -20,45 +20,67 @@ export default function ViewReview() {
   const [showEditor, setShowEditor] = useState(false);
   const [reviewEditor, setReviewEditor] = useState({});
   const [showAddBtn, setShowAddBtn] = useState(true);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   useLayoutEffect(() => {
-    async function fetchReviews() {
-      const options = {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("@token"),
+    if (!location.state) {
+      // create a bad request page
+      history.push("/home");
+    } else {
+      async function loadUserData() {
+        const options = {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("@token"),
+          }
         }
+        needle.get("http://localhost:4000/user-info", options, function(error, response) {
+          if (!error && response.statusCode === 200) {
+            const userData = response.body;
+            setFirstName(userData.firstName);
+            setLastName(userData.lastName.charAt(0).concat("."));
+          }
+        });
       }
-      needle.get("http://localhost:4000/fetch-reviews?filmId="+ location.state.filmId, options, function(error, response) {
-        if (!error && response.statusCode === 200) {
-          const reviewData = response.body;
-          setFilmTitle(reviewData.filmTitle);
-          setFilmDirector(reviewData.filmDirector);
-          setFilmArtwork(reviewData.filmArtwork);
-          setFilmReviewsRaw(reviewData.reviews);
-          setFilmReviews(new Reviews(reviewData.reviews).getReviews());
-        }
-      });
-    }
-
-    fetchReviews();
-
-    if (showEditor) {
-      let toolbarOptions = [
-        [{ 'header': [3, 4, 5, 6, false] }],
-        ['bold', 'italic', 'underline'],
-        [{ 'align': [] }],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }]
-      ];
+      loadUserData();
   
-      let options = {
-        theme: "snow",
-        modules: {
-          toolbar: toolbarOptions
+      async function fetchReviews() {
+        const options = {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("@token"),
+          }
         }
-      };
-      
-      let editor = new Quill("#add-review-editor", options);
-      setReviewEditor(editor);
+        needle.get("http://localhost:4000/fetch-reviews?filmId="+ location.state.filmId, options, function(error, response) {
+          if (!error && response.statusCode === 200) {
+            const reviewData = response.body;
+            setFilmTitle(reviewData.filmTitle);
+            setFilmDirector(reviewData.filmDirector);
+            setFilmArtwork(reviewData.filmArtwork);
+            setFilmReviewsRaw(reviewData.reviews);
+            setFilmReviews(new Reviews(reviewData.reviews).getReviews());
+          }
+        });
+      }
+      fetchReviews();
+  
+      if (showEditor) {
+        let toolbarOptions = [
+          [{ 'header': [3, 4, 5, 6, false] }],
+          ['bold', 'italic', 'underline'],
+          [{ 'align': [] }],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }]
+        ];
+    
+        let options = {
+          theme: "snow",
+          modules: {
+            toolbar: toolbarOptions
+          }
+        };
+        
+        let editor = new Quill("#add-review-editor", options);
+        setReviewEditor(editor);
+      }
     }
   }, [showEditor])
 
@@ -87,6 +109,9 @@ export default function ViewReview() {
 
     return (
     <div>
+      <div className="logo-banner">
+        <Link className="logo-btn" to="/home">Hitchcock's <br></br> List</Link>
+      </div>
       <div className="review-banner">
         <div className="artwork-label">
           Poster | Artwork
@@ -94,7 +119,7 @@ export default function ViewReview() {
           <img className="artwork-content" src={filmArtwork}/>
         </div>
         <div className="account-menu">
-          <div className="account-name">Place Holder</div>
+          <div className="account-name">{firstName} {lastName}</div>
         </div>
       </div>
       <div className="review-body">
@@ -108,8 +133,8 @@ export default function ViewReview() {
           <div className="review-reviews">
             {filmReviews.map((review, i) => (
               <div className="review-review" key={i}>
-                  <div className="content" dangerouslySetInnerHTML={{ __html: review.review }} />
-                  <div className="date"><p>{review.date}</p></div>
+                <div className="content" dangerouslySetInnerHTML={{ __html: review.review }} />
+                <div className="date"><p>{review.date}</p></div>
               </div>
             ))}
           </div>

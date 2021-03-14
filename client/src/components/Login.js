@@ -32,7 +32,7 @@ export default function Login() {
         console.log(error);
       }
     ).then(() => {
-      history.push("/user");
+      history.push("/home");
     });
   }
 
@@ -42,7 +42,7 @@ export default function Login() {
         firebase.auth().currentUser.getIdToken(true).then((idToken) => {
           if (idToken) {
             localStorage.setItem("@token", idToken);
-            history.push("/user");
+            history.push("/home");
           }
         });
       })

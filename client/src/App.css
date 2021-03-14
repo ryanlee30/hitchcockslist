@@ -93,11 +93,32 @@ h5, h4, p{
   color: white;
 }
 
-.banner {
-  position: absolute;
-  width: 235px;
+.home-banner {
+  position: fixed;
+  width: 285px;
   right: 0;
   height: 100vh;
+}
+
+.logo-banner {
+  position: fixed;
+  left: 0;
+  width: 150px;
+  height: 100vh;
+}
+
+.logo-btn, .logo-btn-home {
+  position: fixed;
+  top: 110px;
+  color: #ffffff;
+  font-family: Hitchcock;
+  text-align: right;
+  transform: rotate(-90deg);
+}
+
+.logo-btn:hover {
+  color: #a7a7a7;
+  text-decoration: none;
 }
 
 .review-banner {
@@ -109,41 +130,47 @@ h5, h4, p{
 }
 
 .account-menu {
-  background-color: #0479D2;
   color: white;
   position: fixed;
   margin: auto;
   text-align: center;
   width: 235px;
-  height: 48px;
-  right: 0;
-	bottom: 0;
-  border-top-left-radius: 15px;
+  height: 64px;
+  right: 75px;
+	bottom: 20px;
+  border-radius: 999px;
   font-size: 17px;
+  cursor: pointer;
+}
+
+.account-menu:hover {
+  background-color: #161616;
 }
 
 .account-name {
-  padding: 11px;
-  margin: 0;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 64px;
+  font-family: Hitchcock;
 }
 
 .new-review {
   width: 135px;
-  height: 170px;
+  height: 200px;
 }
 
 .top-banner {
-  padding-left: 75px;
+  padding-left: 150px;
   padding-top: 50px;
   height: 270px;
-  width: calc(100vw - 235px);
+  width: calc(100vw - 285px);
 }
 
 .catalogue {
   position: absolute;
-  padding-left: 55px;
+  padding-left: 130px;
   top: 270px;
-  width: calc(100vw - 235px);
+  width: calc(100vw - 285px);
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -182,9 +209,10 @@ h5, h4, p{
 }
 
 .review-body {
-  width: calc(100vw - 235px - 150px);
+  width: calc(100vw - 235px - 150px - 150px);
   height: 100vh;
-  padding: 50px 0 0 150px;
+  padding: 50px 0 0 0;
+  margin-left: 150px;
 }
 
 .review-console {
@@ -283,14 +311,13 @@ h5, h4, p{
 
 .ql-toolbar.ql-snow {
   width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
-  background-color: #A7A7A7;
+  background-color: #ffffff;
   border-radius: 5px 5px 0 0;
   border: 0;
 }
 
 .ql-container.ql-snow {
-  color: white;
-  background-color: #343434;
+  background-color: #a7a7a7;
   border: 0;
   font-size: 18px;
 }

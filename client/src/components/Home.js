@@ -10,6 +10,8 @@ export default function Home() {
   const location = useLocation();
   const [modalShow, setModalShow] = useState(false);
   const [films, setFilms] = useState([]);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   useLayoutEffect(() => {
     if (location.state) {
@@ -17,6 +19,22 @@ export default function Home() {
         setModalShow(true);
       }
     }
+
+    async function loadUserData() {
+      const options = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("@token"),
+        }
+      }
+      needle.get("http://localhost:4000/user-info", options, function(error, response) {
+        if (!error && response.statusCode === 200) {
+          const userData = response.body;
+          setFirstName(userData.firstName);
+          setLastName(userData.lastName.charAt(0).concat("."));
+        }
+      });
+    }
+    loadUserData();
 
     async function fetchFilms() {
       const options = {
@@ -38,14 +56,17 @@ export default function Home() {
   }, [])
 
   function goToViewReview(filmId) {
-    history.push("/review/v/test", { filmId: filmId });
+    history.push("/review/v", { filmId: filmId });
   }
 
   return (
     <div>
-      <div className="banner">
+      <div className="logo-banner">
+        <div className="logo-btn-home">Hitchcock's <br></br> List</div>
+      </div>
+      <div className="home-banner">
         <div className="account-menu">
-          <div className="account-name">Place Holder</div>
+          <div className="account-name">{firstName} {lastName}</div>
         </div>
       </div>
       <div className="top-banner">

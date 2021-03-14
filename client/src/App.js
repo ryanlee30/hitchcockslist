@@ -14,37 +14,33 @@ export default class App extends Component {
     return (
       <div className="App">
         <BrowserRouter>
-              <Switch>
-                  <Route path={"/signup"}>
-                    <Unprotected children={<Signup />}/>
-                  </Route>
-                  <Route path={"/login"}>
-                    <Unprotected children={<Login />}/>
-                  </Route>
-                  <Route path={"/home"} render={() => (
-                    isLoggedIn() ? (
-                      <Home />
-                    ) : (
-                      <Redirect to="/login"/>
-                    )
-                  )}/>
-                  <Route path={"/user"} render={() => (
-                    isLoggedIn() ? (
-                      <User />
-                    ) : (
-                      <Redirect to="/login"/>
-                    )
-                  )}/>
-                  <Route exact path={"/review"}>
-                    <Redirect to="/review/n"/>
-                  </Route>
-                  <Route path={"/review/n"}>
-                    <NewReview />
-                  </Route>
-                  <Route path={"/review/v/test"}>
-                    <ViewReview />
-                  </Route>
-              </Switch>
+          <Switch>
+            <Route exact path={"/"}>
+              <Redirect to="/home"/>
+            </Route>
+            <Route path={"/signup"}>
+              <Unprotected children={<Signup />}/>
+            </Route>
+            <Route path={"/login"}>
+              <Unprotected children={<Login />}/>
+            </Route>
+            <Route path={"/home"} render={() => (
+              isLoggedIn() ? (
+                <Home />
+              ) : (
+                <Redirect to="/login"/>
+              )
+            )}/>
+            <Route exact path={"/review"}>
+              <Redirect to="/review/n"/>
+            </Route>
+            <Route path={"/review/n"}>
+              <NewReview />
+            </Route>
+            <Route path={"/review/v"}>
+              <ViewReview />
+            </Route>
+          </Switch>
         </BrowserRouter>
       </div>
     );

@@ -28,15 +28,19 @@ export default function NewReview() {
 
   useLayoutEffect(() => {
     async function loadUserData() {
-      const response = await fetch("http://localhost:4000/user-info", {
+      const options = {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("@token"),
-        },
+        }
+      }
+      needle.get("http://localhost:4000/user-info", options, function(error, response) {
+        if (!error && response.statusCode === 200) {
+          const userData = response.body;
+          setFirstName(userData.firstName);
+          setLastName(userData.lastName.charAt(0).concat("."));
+          setUid(userData.uid);
+        }
       });
-      const userData = await response.json();
-      setFirstName(userData.firstName);
-      setLastName(userData.lastName);
-      setUid(userData.uid);
     }
     loadUserData();
 
@@ -94,6 +98,9 @@ export default function NewReview() {
 
     return (
     <div>
+      <div className="logo-banner">
+        <Link className="logo-btn" to="/home">Hitchcock's <br></br> List</Link>
+      </div>
       <div className="review-banner">
         <div className="artwork-label">
           Poster | Artwork
