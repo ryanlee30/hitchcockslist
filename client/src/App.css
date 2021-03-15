@@ -272,6 +272,7 @@ h5, h4, p{
 .artwork-content {
   margin-top: 20px;
   width: 185px;
+  margin-bottom: 20px;
 }
 
 .filepond--root {
@@ -406,4 +407,8 @@ h5, h4, p{
 
 .ql-align-right {
   text-align: right;
+}
+
+.fade.validation-error-msg.alert.alert-danger.alert-dismissible.show {
+  margin-right: 100px;
 }

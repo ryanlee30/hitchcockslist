@@ -51,6 +51,12 @@ export default function Login() {
       });
   }
 
+  function onEnter(event) {
+    if (event.key === "Enter") {
+      passwordAuthentication();
+    }
+  }
+
   return (
       <div style={{paddingBottom: 150}}>
         <Link to="/signup" className="redirect-btn" style={{textDecoration: 'none', float: 'right'}}>Sign up</Link>
@@ -62,7 +68,7 @@ export default function Login() {
           <Form.Control type="email" placeholder="Email" onChange={e => setEmail(e.target.value)}/>
         </Form.Group>
         <Form.Group controlId="formAuthPassword">
-          <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
+          <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} onKeyPress={e => onEnter(e)}/>
         </Form.Group>
         <Link to="#" className="redirect-btn" style={{textDecoration: 'none'}} onClick={passwordAuthentication}>Log in</Link>
         <div style={{paddingTop: 15}}>

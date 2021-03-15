@@ -3,6 +3,7 @@ import 'filepond/dist/filepond.min.css'
 
 import { React, useLayoutEffect, useState } from 'react';
 import { useHistory, useLocation, Link } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
 import needle from 'needle';
 import { firebase } from '../firebase';
 import Reviews from '../controllers/Reviews';
@@ -22,27 +23,16 @@ export default function ViewReview() {
   const [showAddBtn, setShowAddBtn] = useState(true);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [showError, setShowError] = useState(false);
 
   useLayoutEffect(() => {
     if (!location.state) {
       // create a bad request page
       history.push("/home");
     } else {
-      async function loadUserData() {
-        const options = {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("@token"),
-          }
-        }
-        needle.get("http://localhost:4000/user-info", options, function(error, response) {
-          if (!error && response.statusCode === 200) {
-            const userData = response.body;
-            setFirstName(userData.firstName);
-            setLastName(userData.lastName.charAt(0).concat("."));
-          }
-        });
-      }
-      loadUserData();
+      setFirstName(location.state.firstName);
+      setLastName(location.state.lastName);
   
       async function fetchReviews() {
         const options = {
@@ -107,6 +97,23 @@ export default function ViewReview() {
     setShowAddBtn(true);
   }
 
+  function validate() {
+    let validationErrorMsg = "";
+    if (reviewEditor.getContents().ops.length === 1) {
+      if (reviewEditor.getContents().ops[0].insert.trim() === "") {
+        validationErrorMsg += "Review is empty"
+      }
+    }
+
+    if (!validationErrorMsg) {
+      persistContent();
+      setShowError(false);
+    } else {
+      setErrorMsg(validationErrorMsg);
+      setShowError(true);
+    }
+  }
+
     return (
     <div>
       <div className="logo-banner">
@@ -117,6 +124,11 @@ export default function ViewReview() {
           Poster | Artwork
           <br/>
           <img className="artwork-content" src={filmArtwork}/>
+          {showError ?
+            <Alert className="validation-error-msg" variant="danger" onClose={() => setShowError(false)} dismissible>
+              {errorMsg}
+            </Alert>
+            : null}
         </div>
         <div className="account-menu">
           <div className="account-name">{firstName} {lastName}</div>
@@ -143,7 +155,7 @@ export default function ViewReview() {
               <div id="add-review-editor"></div>
               <div className="add-review-editor-btn-container">
                 <div className="add-review-editor-btn" onClick={hideEditor}>Cancel</div>&nbsp;&nbsp;&nbsp;&nbsp;
-                <div className="add-review-editor-btn" onClick={persistContent}>Submit</div>
+                <div className="add-review-editor-btn" onClick={validate}>Submit</div>
               </div>
             </div>
             : null }

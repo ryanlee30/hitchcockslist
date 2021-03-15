@@ -30,7 +30,9 @@ export default function Home() {
         if (!error && response.statusCode === 200) {
           const userData = response.body;
           setFirstName(userData.firstName);
-          setLastName(userData.lastName.charAt(0).concat("."));
+          if (userData.lastName) {
+            setLastName(userData.lastName.charAt(0).concat("."));
+          }
         }
       });
     }
@@ -56,7 +58,7 @@ export default function Home() {
   }, [])
 
   function goToViewReview(filmId) {
-    history.push("/review/v", { filmId: filmId });
+    history.push("/review/v", { filmId: filmId, firstName: firstName, lastName: lastName });
   }
 
   return (

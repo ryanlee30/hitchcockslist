@@ -34,12 +34,20 @@ export default class App extends Component {
             <Route exact path={"/review"}>
               <Redirect to="/review/n"/>
             </Route>
-            <Route path={"/review/n"}>
-              <NewReview />
-            </Route>
-            <Route path={"/review/v"}>
-              <ViewReview />
-            </Route>
+            <Route path={"/review/n"} render={() => (
+              isLoggedIn() ? (
+                <NewReview />
+              ) : (
+                <Redirect to="/login"/>
+              )
+            )}/>
+            <Route path={"/review/v"} render={() => (
+              isLoggedIn() ? (
+                <ViewReview />
+              ) : (
+                <Redirect to="/login"/>
+              )
+            )}/>
           </Switch>
         </BrowserRouter>
       </div>

@@ -2,7 +2,7 @@ import '../App.css';
 import 'filepond/dist/filepond.min.css'
 import { React, useLayoutEffect, useState } from 'react';
 import { useHistory, useLocation, Link } from 'react-router-dom';
-import { Form } from 'react-bootstrap';
+import { Form, Alert } from 'react-bootstrap';
 import Quill from 'quill';
 import { FilePond, registerPlugin } from 'react-filepond';
 import { firebase } from '../firebase';
@@ -11,6 +11,7 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginFileEncode from 'filepond-plugin-file-encode';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import needle from 'needle';
+const DEFAULT_ARTWORK = "https://i.imgur.com/TO6CEXb.png";
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileEncode);
 
@@ -25,6 +26,8 @@ export default function NewReview() {
   const [filmDirector, setFilmDirector] = useState("");
   const [filmArtwork, setFilmArtwork] = useState("");
   const [reviewEditor, setReviewEditor] = useState({});
+  const [errorMsg, setErrorMsg] = useState("");
+  const [showError, setShowError] = useState(false);
 
   useLayoutEffect(() => {
     async function loadUserData() {
@@ -86,14 +89,61 @@ export default function NewReview() {
     //   }
     // });
 
+    let artworkUrl = "";
+    if (filmArtwork) {
+      artworkUrl = filmArtwork;
+    } else {
+      artworkUrl = DEFAULT_ARTWORK;
+    }
+
     const db = firebase.firestore();
     db.collection('films').add({
       title: filmTitle,
       director: filmDirector,
-      artwork: filmArtwork,
+      artwork: artworkUrl,
       reviews: JSON.stringify(contents),
       uid: uid
+    }).then(() => {
+      history.push("/home");
     });
+  }
+
+  function validate() {
+    let validationErrorMsg = "";
+    if (!filmTitle) {
+      if (!validationErrorMsg) {
+        validationErrorMsg += "Film title";
+      } else {
+        validationErrorMsg += ", film title";
+      }
+    }
+    if (!filmDirector) {
+      if (!validationErrorMsg) {
+        validationErrorMsg += "Director";
+      } else {
+        validationErrorMsg += ", director";
+      }
+    }
+    if (reviewEditor.getContents().ops.length === 1) {
+      if (reviewEditor.getContents().ops[0].insert.trim() === "") {
+        if (!validationErrorMsg) {
+          validationErrorMsg += "Review";
+        } else {
+          validationErrorMsg += ", review";
+        }
+      }
+    }
+    if (validationErrorMsg) {
+      validationErrorMsg += " field(s) missing";
+    }
+
+    if (!validationErrorMsg) {
+      persistContent();
+      setShowError(false);
+    } else {
+      setErrorMsg(validationErrorMsg);
+      setShowError(true);
+    }
   }
 
     return (
@@ -110,8 +160,14 @@ export default function NewReview() {
           files={imageFile}
           onupdatefiles={setImageFile}
           allowMultiple={false}
+          allowPaste={false}
           labelIdle='Drag & drop or <span class="filepond--label-action">Browse</span>'
         />
+        {showError ?
+          <Alert className="validation-error-msg" variant="danger" onClose={() => setShowError(false)} dismissible>
+            {errorMsg}
+          </Alert>
+          : null}
         <div className="account-menu">
           <div className="account-name">{firstName} {lastName}</div>
         </div>
@@ -121,7 +177,7 @@ export default function NewReview() {
           <div className="review-console-header-container">
             <div className="review-console-header-head">
               <h5>About your review</h5>
-              <Link to="#" className="redirect-btn-submit" style={{textDecoration: 'none', float: 'right'}} onClick={persistContent}>Submit</Link>
+              <Link to="#" className="redirect-btn-submit" style={{textDecoration: 'none', float: 'right'}} onClick={validate}>Submit</Link>
             </div>
             <div className="review-console-film-info">
               <Form.Group controlId="formFilmTitle">

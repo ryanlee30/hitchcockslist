@@ -41,6 +41,12 @@ export default function Signup() {
     });
   };
   
+  function onEnter(event) {
+    if (event.key === "Enter") {
+      createUser();
+    }
+  }
+  
   return (
       <div style={{paddingBottom: 150}}>
       <div style={{paddingBottom: 100}}>
@@ -57,7 +63,7 @@ export default function Signup() {
         <Form.Control type="email" placeholder="Email" onChange={e => setEmail(e.target.value)}/>
       </Form.Group>
       <Form.Group controlId="formSignUpPassword">
-        <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
+        <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} onKeyPress={e => onEnter(e)}/>
       </Form.Group>
       <Link to="#" className="redirect-btn" style={{textDecoration: 'none'}} onClick={createUser}>Sign up</Link>
       </div>
