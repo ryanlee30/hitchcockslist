@@ -1,6 +1,5 @@
 import '../App.css';
 import 'filepond/dist/filepond.min.css'
-
 import { React, useLayoutEffect, useState } from 'react';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
@@ -9,6 +8,13 @@ import { firebase } from '../firebase';
 import Reviews from '../controllers/Reviews';
 import add_review from '../imgs/add_review.png'
 import Quill from 'quill';
+import { FilePond, registerPlugin } from 'react-filepond';
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilePondPluginFileEncode from 'filepond-plugin-file-encode';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+
+registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileEncode);
 
 export default function ViewReview() {
   const history = useHistory();
@@ -25,6 +31,10 @@ export default function ViewReview() {
   const [lastName, setLastName] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [showError, setShowError] = useState(false);
+  const [showFilePond, setShowFilePond] = useState(false);
+  const [showArtwork, setShowArtwork] = useState(true);
+  const [imageFile, setImageFile] = useState([]);
+  const [showChangeArtworkLabel, setShowChangeArtworkLabel] = useState(false);
 
   useLayoutEffect(() => {
     if (!location.state) {
@@ -95,6 +105,7 @@ export default function ViewReview() {
   function hideEditor() {
     setShowEditor(false);
     setShowAddBtn(true);
+    setShowError(false);
   }
 
   function validate() {
@@ -114,6 +125,42 @@ export default function ViewReview() {
     }
   }
 
+  function changeArtwork() {
+    setShowArtwork(!showArtwork);
+    setShowFilePond(showArtwork);
+    if (showError) {
+      setShowError(false);
+    }
+  }
+
+  function submitChangeArtwork() {
+    if (imageFile[0]) {
+      const data = {
+        "image": imageFile[0].getFileEncodeBase64String()
+      }
+      const headers = {
+        "Authorization": "Client-ID 2c37087269a1a68"
+      }
+      needle.post("https://api.imgur.com/3/image", data, { headers: headers, multipart: true }, function(err, resp, body) {
+        if (body.status === 200) {
+          setFilmArtwork(body.data.link);
+          const db = firebase.firestore();
+          db.collection('films').doc(location.state.filmId).update({
+            artwork: body.data.link
+          }).then(() => {
+            setImageFile([]);
+            changeArtwork();
+          });
+        } else {
+          console.log(resp);
+        }
+      });
+    } else {
+      setErrorMsg("Please upload a poster or artwork first");
+      setShowError(true);
+    }
+  }
+
     return (
     <div>
       <div className="logo-banner">
@@ -123,7 +170,30 @@ export default function ViewReview() {
         <div className="artwork-label">
           Poster | Artwork
           <br/>
-          <img className="artwork-content" src={filmArtwork}/>
+          {showFilePond ?
+            <div>
+              <FilePond
+              className="artwork-upload"
+              files={imageFile}
+              onupdatefiles={setImageFile}
+              allowMultiple={false}
+              allowPaste={false}
+              labelIdle='Drag & drop or <span class="filepond--label-action">Browse</span>'
+              />
+              <div className="change-artwork-btn-container">
+                <div className="cancel-change-artwork" onClick={changeArtwork}>Cancel</div>&nbsp;&nbsp;&nbsp;&nbsp;
+                <div className="submit-change-artwork" onClick={submitChangeArtwork}>Submit</div>
+              </div>
+            </div>
+            : null}
+          {showArtwork ?
+            <div className="change-artwork-content-container" onClick={changeArtwork} onMouseEnter={() => setShowChangeArtworkLabel(true)} onMouseLeave={() => setShowChangeArtworkLabel(false)}>
+              <img className="change-artwork-content" src={filmArtwork}/>
+              {showChangeArtworkLabel ?
+                <p className="change-artwork-content-label">Change<br></br>Artwork</p>
+              : null}
+            </div>
+            : null}
           {showError ?
             <Alert className="validation-error-msg" variant="danger" onClose={() => setShowError(false)} dismissible>
               {errorMsg}

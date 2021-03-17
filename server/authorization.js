@@ -19,7 +19,7 @@ function authorization(request, response, next) {
       next();
     })
     .catch(() => {
-      response.send({ message: "Could not authorize" }).status(403);
+      response.status(401).send({ message: "Could not authorize" });
       console.log("Could not authorize");
     });
 }

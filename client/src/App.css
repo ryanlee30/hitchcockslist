@@ -181,8 +181,8 @@ h5, h4, p{
   width: 135px;
 }
 
-.film:hover .filmArtwork, .film:hover .filmTitle, .film:hover .filmDirector{
-  opacity: 0.7;
+.film:hover .filmArtwork{
+  opacity: 0.6;
 }
 
 .film:hover {
@@ -410,5 +410,54 @@ h5, h4, p{
 }
 
 .fade.validation-error-msg.alert.alert-danger.alert-dismissible.show {
+  margin-top: 20px;
   margin-right: 100px;
+}
+
+.cancel-change-artwork, .submit-change-artwork {
+  text-align: right;
+  color: #A7A7A7;
+}
+
+.cancel-change-artwork:hover {
+  cursor: pointer;
+}
+
+.change-artwork-content-container {
+  margin-top: 20px;
+  position: relative;
+  width: 185px;
+}
+
+.change-artwork-content {
+  width: 185px;
+  cursor: pointer;
+}
+
+.change-artwork-content-container:hover .change-artwork-content {
+  opacity: 0.5;
+}
+
+.change-artwork-content-label {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.change-artwork-content-label:hover {
+  cursor: pointer;
+}
+
+.change-artwork-btn-container {
+  margin-right: 100px;
+  display: flex;
+  justify-content: flex-end;
+  flex-flow: row;
+  margin-bottom: 20px;
+}
+
+.submit-change-artwork {
+  cursor: pointer;
 }

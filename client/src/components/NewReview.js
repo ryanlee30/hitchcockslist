@@ -3,6 +3,7 @@ import 'filepond/dist/filepond.min.css'
 import { React, useLayoutEffect, useState } from 'react';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import { Form, Alert } from 'react-bootstrap';
+import { auth } from '../firebase';
 import Quill from 'quill';
 import { FilePond, registerPlugin } from 'react-filepond';
 import { firebase } from '../firebase';
@@ -30,10 +31,14 @@ export default function NewReview() {
   const [showError, setShowError] = useState(false);
 
   useLayoutEffect(() => {
-    async function loadUserData() {
+    async function loadUserData(idToken) {
+      let token = localStorage.getItem("@token");
+      if (idToken) {
+        token = idToken;
+      }
       const options = {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("@token"),
+          Authorization: "Bearer " + token,
         }
       }
       needle.get("http://localhost:4000/user-info", options, function(error, response) {
@@ -45,7 +50,36 @@ export default function NewReview() {
         }
       });
     }
-    loadUserData();
+
+    function isAuthorized() {
+      const options = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("@token"),
+        }
+      }
+      needle.get("http://localhost:4000/is-authorized", options, function(error, response) {
+        if (error || response.statusCode === 401) {
+          auth.onAuthStateChanged(function(user) {
+            if (user) {
+              auth.currentUser.getIdToken(true).then((idToken) => {
+                if (idToken) {
+                  loadUserData(idToken);
+                  localStorage.setItem("@token", idToken)
+                } else {
+                  console.log("Firebase: Id Token not returned.")
+                }
+              });
+            } else {
+              console.log("Firebase: User cannot be found.")
+            }
+          });
+        } else if (response.statusCode === 200) {
+          loadUserData();
+        }
+      });
+    }
+
+    isAuthorized();
 
     let toolbarOptions = [
       [{ 'header': [3, 4, 5, 6, false] }],
@@ -75,37 +109,63 @@ export default function NewReview() {
       ]
     }
 
-    // const data = {
-    //   "image": imageFile[0].getFileEncodeBase64String()
-    // }
-    // const headers = {
-    //   "Authorization": "Client-ID 2c37087269a1a68"
-    // }
-    // needle.post("https://api.imgur.com/3/image", data, { headers: headers, multipart: true }, function(err, resp, body) {
-    //   if (body.status === 200) {
-    //     setFilmArtwork(body.data.link);
-    //   } else {
-    //     console.log(resp);
-    //   }
-    // });
+    let artworkUrl = DEFAULT_ARTWORK;
 
-    let artworkUrl = "";
-    if (filmArtwork) {
-      artworkUrl = filmArtwork;
+    if (imageFile[0]) {
+      const data = {
+        "image": imageFile[0].getFileEncodeBase64String()
+      }
+      const headers = {
+        "Authorization": "Client-ID 2c37087269a1a68"
+      }
+      needle.post("https://api.imgur.com/3/image", data, { headers: headers, multipart: true }, function(err, resp, body) {
+        if (body.status === 200) {
+          artworkUrl = (body.data.link);
+          const db = firebase.firestore();
+          db.collection('films').add({
+            title: filmTitle,
+            director: filmDirector,
+            artwork: artworkUrl,
+            reviews: JSON.stringify(contents),
+            uid: uid
+          }).then(() => {
+            history.push("/home");
+          });
+        } else {
+          console.log(resp);
+        }
+      });
     } else {
-      artworkUrl = DEFAULT_ARTWORK;
+      const db = firebase.firestore();
+      db.collection('films').add({
+        title: filmTitle,
+        director: filmDirector,
+        artwork: artworkUrl,
+        reviews: JSON.stringify(contents),
+        uid: uid
+      }).then(() => {
+        history.push("/home");
+      });
     }
+  }
 
-    const db = firebase.firestore();
-    db.collection('films').add({
-      title: filmTitle,
-      director: filmDirector,
-      artwork: artworkUrl,
-      reviews: JSON.stringify(contents),
-      uid: uid
-    }).then(() => {
-      history.push("/home");
-    });
+  function uploadToImgur() {
+    if (imageFile[0]) {
+      const data = {
+        "image": imageFile[0].getFileEncodeBase64String()
+      }
+      const headers = {
+        "Authorization": "Client-ID 2c37087269a1a68"
+      }
+      needle.post("https://api.imgur.com/3/image", data, { headers: headers, multipart: true }, function(err, resp, body) {
+        if (body.status === 200) {
+          console.log("done imgur upload");
+          setFilmArtwork(body.data.link);
+        } else {
+          console.log(resp);
+        }
+      });
+    }
   }
 
   function validate() {
@@ -181,10 +241,10 @@ export default function NewReview() {
             </div>
             <div className="review-console-film-info">
               <Form.Group controlId="formFilmTitle">
-                  <Form.Control type="text" placeholder="Film title" onChange={e => setFilmTitle(e.target.value)}/>
+                  <Form.Control type="text" placeholder="Film title" autoComplete="off" onChange={e => setFilmTitle(e.target.value)}/>
               </Form.Group>
               <Form.Group controlId="formFilmDirector">
-                  <Form.Control type="text" placeholder="Director" onChange={e => setFilmDirector(e.target.value)}/>
+                  <Form.Control type="text" placeholder="Director" autoComplete="off" onChange={e => setFilmDirector(e.target.value)}/>
               </Form.Group>
             </div>
           </div>

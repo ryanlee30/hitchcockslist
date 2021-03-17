@@ -8,6 +8,10 @@ app.use(cors());
 
 app.use("/", authorization);
 
+app.get("/is-authorized", (request, response) => {
+    response.send("Checking for authorization...");
+});
+
 app.get("/user-info", (request, response) => {
     getUserInfo(response.locals.uid).then(result => {
         response.send(result);

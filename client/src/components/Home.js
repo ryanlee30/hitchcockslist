@@ -1,5 +1,6 @@
 import '../App.css';
 import { React, useLayoutEffect, useState } from 'react';
+import { auth } from '../firebase';
 import SignOutFirstModal from './SignOutFirstModal';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import new_review from '../imgs/new_review.png'
@@ -20,10 +21,14 @@ export default function Home() {
       }
     }
 
-    async function loadUserData() {
+    function loadUserData(idToken) {
+      let token = localStorage.getItem("@token");
+      if (idToken) {
+        token = idToken;
+      }
       const options = {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("@token"),
+          Authorization: "Bearer " + token,
         }
       }
       needle.get("http://localhost:4000/user-info", options, function(error, response) {
@@ -36,15 +41,18 @@ export default function Home() {
         }
       });
     }
-    loadUserData();
 
-    async function fetchFilms() {
+    function fetchFilms(idToken) {
+      let token = localStorage.getItem("@token");
+      if (idToken) {
+        token = idToken;
+      }
       const options = {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("@token"),
+          Authorization: "Bearer " + token,
         }
       }
-      needle.get("http://localhost:4000/fetch-films", options, function(error, response) {
+      needle.get("http://localhost:4000/fetch-films", options, function(error, response) { 
         if (!error && response.statusCode === 200) {
           const filmsData = response.body;
           if (filmsData) {
@@ -54,7 +62,37 @@ export default function Home() {
       });
     }
 
-    fetchFilms();
+    function isAuthorized() {
+      const options = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("@token"),
+        }
+      }
+      needle.get("http://localhost:4000/is-authorized", options, function(error, response) {
+        if (error || response.statusCode === 401) {
+          auth.onAuthStateChanged(function(user) {
+            if (user) {
+              auth.currentUser.getIdToken(true).then((idToken) => {
+                if (idToken) {
+                  loadUserData(idToken);
+                  fetchFilms(idToken);
+                  localStorage.setItem("@token", idToken);
+                } else {
+                  console.log("Firebase: Id Token not returned.")
+                }
+              });
+            } else {
+              console.log("Firebase: User cannot be found.")
+            }
+          });
+        } else if (response.statusCode === 200) {
+          loadUserData();
+          fetchFilms();
+        }
+      });
+    }
+
+    isAuthorized();
   }, [])
 
   function goToViewReview(filmId) {
@@ -75,12 +113,15 @@ export default function Home() {
         <Link to="/review"><img className="new-review" src={new_review} alt="New review"/></Link>
       </div>
       <div className="catalogue">
-        {films.map((film, i) => (
-          <div className="film" key={i} onClick={() => {goToViewReview(film.filmId)}}>
-              <div className="filmTitle"><p>{film.filmTitle}</p></div>
-              <img className="filmArtwork" src={film.filmArtwork}/>
-              <div className="filmDirector"><p>{film.filmDirector}</p></div>
-          </div>))}
+        {films ?
+          films.map((film, i) => (
+            <div className="film" key={i} onClick={() => {goToViewReview(film.filmId)}}>
+                <div className="filmTitle"><p>{film.filmTitle}</p></div>
+                <img className="filmArtwork" src={film.filmArtwork}/>
+                <div className="filmDirector"><p>{film.filmDirector}</p></div>
+            </div>))
+          : null
+        }
       </div>
       <SignOutFirstModal show={modalShow} onHide={() => {setModalShow(false); history.replace("/home", { modalShow: false })}}/>
     </div>
