@@ -8,6 +8,7 @@ import { firebase } from '../firebase';
 import Reviews from '../controllers/Reviews';
 import add_review from '../imgs/add_review.png'
 import Quill from 'quill';
+import AccountMenu from './AccountMenu';
 import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
@@ -200,16 +201,14 @@ export default function ViewReview() {
             </Alert>
             : null}
         </div>
-        <div className="account-menu">
-          <div className="account-name">{firstName} {lastName}</div>
-        </div>
+        <AccountMenu firstName={firstName} lastName={lastName}/>
       </div>
       <div className="review-body">
         <div className="review-console">
           <div className="review-console-header-container">
             <div className="review-console-header-head">
               <h4>{filmTitle}</h4>
-              <h5>by&nbsp;&nbsp;{filmDirector}</h5>
+              <h5>by&nbsp;{filmDirector}</h5>
             </div>
           </div>
           <div className="review-reviews">

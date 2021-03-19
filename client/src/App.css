@@ -114,6 +114,7 @@ h5, h4, p{
   font-family: Hitchcock;
   text-align: right;
   transform: rotate(-90deg);
+  animation: fade-in 1s;
 }
 
 .logo-btn:hover {
@@ -138,20 +139,53 @@ h5, h4, p{
   height: 64px;
   right: 75px;
 	bottom: 20px;
-  border-radius: 999px;
+  border-radius: 25px;
   font-size: 17px;
-  cursor: pointer;
+  animation: fade-in 1s;
 }
 
 .account-menu:hover {
   background-color: #161616;
 }
 
+.account-menu-opened {
+  background-color: #161616;
+  color: white;
+  position: fixed;
+  margin: auto;
+  text-align: center;
+  width: 235px;
+  height: 240px;
+  right: 75px;
+	bottom: 20px;
+  border-radius: 25px;
+  font-size: 17px;
+  animation: expand 0.3s;
+  overflow: hidden;
+}
+
+@keyframes expand {
+  from {height: 64px;}
+  to {height: 240px;}
+}
+
+
 .account-name {
   text-align: center;
   vertical-align: middle;
   line-height: 64px;
   font-family: Hitchcock;
+}
+
+.account-menu-expand {
+  cursor: pointer;
+  width: 20px;
+}
+
+.account-menu-options {
+  text-align: left;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 .new-review {
@@ -179,6 +213,7 @@ h5, h4, p{
 .film {
   margin: 20px;
   width: 135px;
+  animation: fade-in 0.5s;
 }
 
 .film:hover .filmArtwork{
@@ -302,6 +337,7 @@ h5, h4, p{
 
 .text-editor-container {
   margin: 0 40px 40px 40px;
+  animation: fade-in 1s;
 }
 
 #text-editor {
@@ -436,6 +472,12 @@ h5, h4, p{
 
 .change-artwork-content-container:hover .change-artwork-content {
   opacity: 0.5;
+  animation: fade-out-change-artwork 1s;
+}
+
+@keyframes fade-out-change-artwork {
+  from {opacity: 1;}
+  to {opacity: 0.5;}
 }
 
 .change-artwork-content-label {
@@ -460,4 +502,9 @@ h5, h4, p{
 
 .submit-change-artwork {
   cursor: pointer;
+}
+
+@keyframes fade-in {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }

@@ -7,6 +7,7 @@ import { auth } from '../firebase';
 import Quill from 'quill';
 import { FilePond, registerPlugin } from 'react-filepond';
 import { firebase } from '../firebase';
+import AccountMenu from './AccountMenu';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginFileEncode from 'filepond-plugin-file-encode';
@@ -228,9 +229,7 @@ export default function NewReview() {
             {errorMsg}
           </Alert>
           : null}
-        <div className="account-menu">
-          <div className="account-name">{firstName} {lastName}</div>
-        </div>
+          <AccountMenu firstName={firstName} lastName={lastName}/>
       </div>
       <div className="review-body">
         <div className="review-console">

@@ -5,6 +5,7 @@ import SignOutFirstModal from './SignOutFirstModal';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import new_review from '../imgs/new_review.png'
 import needle from 'needle';
+import AccountMenu from './AccountMenu';
 
 export default function Home() {
   const history = useHistory();
@@ -105,9 +106,7 @@ export default function Home() {
         <div className="logo-btn-home">Hitchcock's <br></br> List</div>
       </div>
       <div className="home-banner">
-        <div className="account-menu">
-          <div className="account-name">{firstName} {lastName}</div>
-        </div>
+        <AccountMenu firstName={firstName} lastName={lastName}/>
       </div>
       <div className="top-banner">
         <Link to="/review"><img className="new-review" src={new_review} alt="New review"/></Link>
