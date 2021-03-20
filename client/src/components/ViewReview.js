@@ -206,7 +206,7 @@ export default function ViewReview() {
       <div className="review-body">
         <div className="review-console">
           <div className="review-console-header-container">
-            <div className="review-console-header-head">
+            <div className="view-review-console-header-head">
               <h4>{filmTitle}</h4>
               <h5>by&nbsp;{filmDirector}</h5>
             </div>

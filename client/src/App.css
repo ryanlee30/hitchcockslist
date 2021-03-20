@@ -22,7 +22,7 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-h5, h4, p{
+h6, h5, h4, p{
   color: white;
   font-family: Calibri;
 }
@@ -93,13 +93,6 @@ h5, h4, p{
   color: white;
 }
 
-.home-banner {
-  position: fixed;
-  width: 285px;
-  right: 0;
-  height: 100vh;
-}
-
 .logo-banner {
   position: fixed;
   left: 0;
@@ -114,7 +107,6 @@ h5, h4, p{
   font-family: Hitchcock;
   text-align: right;
   transform: rotate(-90deg);
-  animation: fade-in 1s;
 }
 
 .logo-btn:hover {
@@ -142,6 +134,7 @@ h5, h4, p{
   border-radius: 25px;
   font-size: 17px;
   animation: fade-in 1s;
+  cursor: pointer;
 }
 
 .account-menu:hover {
@@ -155,7 +148,7 @@ h5, h4, p{
   margin: auto;
   text-align: center;
   width: 235px;
-  height: 240px;
+  height: 115px;
   right: 75px;
 	bottom: 20px;
   border-radius: 25px;
@@ -166,7 +159,7 @@ h5, h4, p{
 
 @keyframes expand {
   from {height: 64px;}
-  to {height: 240px;}
+  to {height: 115px;}
 }
 
 
@@ -178,7 +171,6 @@ h5, h4, p{
 }
 
 .account-menu-expand {
-  cursor: pointer;
   width: 20px;
 }
 
@@ -197,14 +189,14 @@ h5, h4, p{
   padding-left: 150px;
   padding-top: 50px;
   height: 270px;
-  width: calc(100vw - 285px);
+  width: calc(100vw - 305px);
 }
 
 .catalogue {
   position: absolute;
   padding-left: 130px;
   top: 270px;
-  width: calc(100vw - 285px);
+  width: calc(100vw - 305px);
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -272,6 +264,12 @@ h5, h4, p{
   justify-content: space-between;
 }
 
+.view-review-console-header-head {
+  display: flex;
+  justify-content: space-between;
+  animation: fade-in 0.5s;
+}
+
 .review-console-film-info {
   display: flex;
   padding-top: 20px;
@@ -337,7 +335,7 @@ h5, h4, p{
 
 .text-editor-container {
   margin: 0 40px 40px 40px;
-  animation: fade-in 1s;
+  animation: fade-in 0.5s;
 }
 
 #text-editor {
@@ -367,6 +365,7 @@ h5, h4, p{
 .review-review {
   margin-top: 20px;
   margin-bottom: 50px;
+  animation: fade-in 0.5s;
 }
 
 .content {
@@ -399,6 +398,7 @@ h5, h4, p{
   border-radius: 25px;
   position: relative;
   margin: auto;
+  animation: fade-in 1s;
 }
 
 .plus-sign {
@@ -507,4 +507,35 @@ h5, h4, p{
 @keyframes fade-in {
   from {opacity: 0;}
   to {opacity: 1;}
+}
+
+.edit-profile-modal {
+  width: 500px;
+  height: 625px;
+  background-color: #161616;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  border-radius: 25px;
+  animation: fade-in 0.3s;
+}
+
+.profile-change-options {
+  color: white;
+  position: absolute;
+  width: 35%;
+  height: 100%;
+  padding: 30px 0 0 40px;
+}
+
+.profile-change-content {
+  color: white;
+  position: absolute;
+  width: 65%;
+  left: 35%;
+  padding: 30px 40px 0 40px;
+  height: 100%;
+  overflow: hidden;
 }

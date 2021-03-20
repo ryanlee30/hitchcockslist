@@ -105,9 +105,7 @@ export default function Home() {
       <div className="logo-banner">
         <div className="logo-btn-home">Hitchcock's <br></br> List</div>
       </div>
-      <div className="home-banner">
-        <AccountMenu firstName={firstName} lastName={lastName}/>
-      </div>
+      <AccountMenu firstName={firstName} lastName={lastName}/>
       <div className="top-banner">
         <Link to="/review"><img className="new-review" src={new_review} alt="New review"/></Link>
       </div>
