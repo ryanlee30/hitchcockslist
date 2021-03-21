@@ -511,7 +511,7 @@ h6, h5, h4, p{
 
 .edit-profile-modal {
   width: 500px;
-  height: 625px;
+  height: 635px;
   background-color: #161616;
   position: absolute;
   top: 50%;
@@ -523,7 +523,6 @@ h6, h5, h4, p{
 }
 
 .profile-change-options {
-  color: white;
   position: absolute;
   width: 35%;
   height: 100%;
@@ -538,4 +537,21 @@ h6, h5, h4, p{
   padding: 30px 40px 0 40px;
   height: 100%;
   overflow: hidden;
+}
+
+.upload-pp {
+  background-color: #363636;
+  width: 125px;
+  height: 27px;
+  border-radius: 5px;
+  text-align: center;
+  float: center;
+  margin-top: 5px;
+}
+
+#formChangeFirstName, #formChangeLastName {
+  border: 0;
+  border-radius: 0px;
+  background-color: #363636;
+  color: white;
 }

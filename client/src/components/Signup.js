@@ -33,9 +33,10 @@ export default function Signup() {
 
   function addUser(uid) {
     const db = firebase.firestore();
-    db.collection('users').add({
+    db.collection('users').doc(uid).set({
       firstName: {firstName}.firstName,
       lastName: {lastName}.lastName,
+      profilePicture: "",
       uid: uid,
       created: firebase.firestore.Timestamp.now()
     });

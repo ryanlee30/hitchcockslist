@@ -16,7 +16,7 @@ class EditProfileModal extends Component {
             case "account-security":
                 return <ChangeAccountSecurity />;
             default:
-                return <ChangeProfile />;
+                return <ChangeProfile uid={this.props.uid}/>;
         }
     }
 
@@ -24,8 +24,8 @@ class EditProfileModal extends Component {
         return (
             <div>
                 <div className="profile-change-options">
-                    <p style={{cursor: "pointer", width: "45px", fontSize: "17px"}} onClick={() => this.setState({ selectedProfileOption: "profile" })}>Profile</p>
-                    <p style={{cursor: "pointer", width: "120px", fontSize: "17px"}} onClick={() => this.setState({ selectedProfileOption: "account-security" })}>Account Security</p>
+                    <p style={{cursor: "pointer", width: "45px", fontSize: "17px", color: "#DEDEDE"}} onClick={() => this.setState({ selectedProfileOption: "profile" })}>Profile</p>
+                    <p style={{cursor: "pointer", width: "120px", fontSize: "17px", color: "#DEDEDE"}} onClick={() => this.setState({ selectedProfileOption: "account-security" })}>Account Security</p>
                 </div>
                 <div className="profile-change-content">
                     {this.profileChangeContent()}

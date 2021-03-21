@@ -12,10 +12,11 @@ async function getUserInfo(uid) {
                 let userInfo = {
                     firstName: userRecord.displayName.split(" ")[0],
                     lastName: userRecord.displayName.split(" ")[1],
+                    profilePicture: "",
                     uid: uid,
                     created: userRecord.metadata.creationTime
                 }
-                admin.firestore().collection('users').add(userInfo);
+                admin.firestore().collection('users').doc(uid).set(userInfo);
                 return { firstName: userInfo.firstName, lastName: userInfo.lastName, uid: userInfo.uid };
             });
         return result;
