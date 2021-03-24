@@ -18,6 +18,8 @@ export default class ChangeProfile extends Component {
             borderRadius: 999,
             postion: { x: 0.5, y: 0.5 },
         }
+        this.persistData = this.persistData.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
     handleNewImage = e => {
@@ -28,11 +30,11 @@ export default class ChangeProfile extends Component {
         if (editor) this.editor = editor;
     }
 
-    handleSave = data => {
+    handleSave() {
         const img = this.editor.getImageScaledToCanvas().toDataURL();
         const rect = this.editor.getCroppingRect();
     
-        this.setState({
+        return {
           preview: {
             img,
             rect,
@@ -40,22 +42,8 @@ export default class ChangeProfile extends Component {
             width: this.state.width,
             height: this.state.height,
             borderRadius: this.state.borderRadius,
-          },
-        });
-    }
-
-    handleXPosition = e => {
-        const x = parseFloat(e.target.value)
-        this.setState({ position: { ...this.state.position, x } });
-      }
-    
-    handleYPosition = e => {
-        const y = parseFloat(e.target.value)
-        this.setState({ position: { ...this.state.position, y } });
-    }
-
-    handlePositionChange = position => {
-        this.setState({ position });
+          }
+        }
     }
 
     logCallback(e) {
@@ -64,12 +52,12 @@ export default class ChangeProfile extends Component {
     }
 
     persistData() {
-        if (this.state.uid) {
+        if (this.props.uid) {
             const db = firebase.firestore();
             db.collection('users').doc(this.props.uid).update({
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
-                profilePicture: this.state.preview
+                profilePicture: this.handleSave()
             });
         } else {
             console.log("Could not find uid!");
@@ -95,10 +83,7 @@ export default class ChangeProfile extends Component {
                     height={this.state.height}
                     borderRadius={this.state.borderRadius}
                     scale={this.state.scale}
-                    onPositionChange={this.handlePositionChange}
                     onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
-                    onLoadSuccess={this.logCallback.bind(this, 'onLoadSuccess')}
-                    onImageReady={this.logCallback.bind(this, 'onImageReady')}
                     color={[50,50,50, 0.6]}
                 />
                 <label class="upload-pp" for="upload-pp">

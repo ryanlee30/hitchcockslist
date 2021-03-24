@@ -6,6 +6,7 @@ import { useHistory, useLocation, Link } from 'react-router-dom';
 import new_review from '../imgs/new_review.png'
 import needle from 'needle';
 import AccountMenu from './AccountMenu';
+import ProfilePicBuilder from './ProfilePicBuilder';
 
 export default function Home() {
   const history = useHistory();
