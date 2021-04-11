@@ -109,13 +109,13 @@ export default class ChangeProfile extends Component {
             <div>
                 <h5 style={{marginBottom: "20px"}}>Your Profile</h5>
                 <Form.Group controlId="formChangeFirstName">
-                    <Form.Control type="text" placeholder="First name" autoComplete="off" onChange={e => this.setField("first_name", e.target.value)} isInvalid={ !!this.state.errors.first_name }/>
+                    <Form.Control type="text" placeholder="First name" autoComplete="off" spellCheck="false" onChange={e => this.setField("first_name", e.target.value)} isInvalid={ !!this.state.errors.first_name }/>
                     <Form.Control.Feedback type="invalid">
                         { this.state.errors.first_name }
                     </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="formChangeLastName">
-                    <Form.Control type="text" placeholder="Last name" autoComplete="off" onChange={e => this.setField("last_name", e.target.value)} isInvalid={ !!this.state.errors.last_name }/>
+                    <Form.Control type="text" placeholder="Last name" autoComplete="off" spellCheck="false" onChange={e => this.setField("last_name", e.target.value)} isInvalid={ !!this.state.errors.last_name }/>
                     <Form.Control.Feedback type="invalid">
                         { this.state.errors.last_name }
                     </Form.Control.Feedback>

@@ -233,13 +233,13 @@ export default function NewReview() {
             </div>
             <Form className="review-console-film-info">
               <Form.Group controlId="formFilmTitle">
-                  <Form.Control type="text" placeholder="Film title" autoComplete="off" onChange={e => setField("film_title", e.target.value)} onKeyPress={validate} isInvalid={ !!errors.film_title }/>
+                  <Form.Control type="text" placeholder="Film title" autoComplete="off" spellCheck="false" onChange={e => setField("film_title", e.target.value)} onKeyPress={validate} isInvalid={ !!errors.film_title }/>
                   <Form.Control.Feedback type="invalid">
                     { errors.film_title }
                   </Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="formFilmDirector">
-                  <Form.Control type="text" placeholder="Director" autoComplete="off" onChange={e => setField("film_director", e.target.value)} onKeyPress={validate} isInvalid={ !!errors.film_director }/>
+                  <Form.Control type="text" placeholder="Director" autoComplete="off" spellCheck="false" onChange={e => setField("film_director", e.target.value)} onKeyPress={validate} isInvalid={ !!errors.film_director }/>
                   <Form.Control.Feedback type="invalid">
                   { errors.film_director }
                   </Form.Control.Feedback>

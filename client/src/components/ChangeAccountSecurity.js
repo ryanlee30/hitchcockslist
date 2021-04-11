@@ -9,7 +9,7 @@ export default class ChangeAccountSecurity extends Component {
         this.state = {
             onPasswordUpdate: "",
             errors: {},
-            form: {current_password: "", new_password: "", confirm_password: ""},
+            form: {new_password: "", confirm_new_password: ""},
             // image: "",
             // preview: null,
             // scale: 1.2,
@@ -24,15 +24,20 @@ export default class ChangeAccountSecurity extends Component {
 
     persistData() {
         let user = auth.currentUser;
-        user.updatePassword(this.state.form.new_password).then(() => {
+        user.updatePassword(this.state.form.new_password).then((msg) => {
             this.setState({
                 onPasswordUpdate: "success"
             });
         }).catch((error) => {
-            console.log(error);
-            this.setState({
-                onPasswordUpdate: "unknown"
-            });
+            if (error.code === "auth/requires-recent-login") {
+                this.setState({
+                    onPasswordUpdate: "login-again"
+                });
+            } else {
+                this.setState({
+                    onPasswordUpdate: "unknown"
+                });
+            }
         });
     }
 
@@ -55,18 +60,26 @@ export default class ChangeAccountSecurity extends Component {
     
     validate() {
         const errs = {};
-        if (!this.state.form.current_password.trim()) {
-            errs.current_password = "Please provide your current password."
-        }
         if (!this.state.form.new_password.trim()) {
             errs.new_password = "Please provide a new password."
-        }
-        if (!this.state.form.confirm_password.trim()) {
-            errs.confirm_password = "Please confirm the new password."
-        }
-        if (this.state.form.new_password !== this.state.form.confirm_password) {
             this.setState({
-                onPasswordUpdate: "failed"
+                onPasswordUpdate: ""
+            });
+        }
+        if (!this.state.form.confirm_new_password.trim()) {
+            errs.confirm_new_password = "Please confirm your new password."
+            this.setState({
+                onPasswordUpdate: ""
+            });
+        }
+        if (this.state.form.new_password !== this.state.form.confirm_new_password) {
+            this.setState({
+                onPasswordUpdate: "does-not-match"
+            });
+        }
+        if (!this.state.form.new_password.trim() && this.state.form.confirm_new_password.trim()) {
+            this.setState({
+                onPasswordUpdate: ""
             });
         }
         return errs;
@@ -87,15 +100,22 @@ export default class ChangeAccountSecurity extends Component {
         return (
             <div>
                 <h5 style={{marginBottom: "20px"}}>Change Password</h5>
+                <p className="informative-text">A password change requires a recent log in.</p>
                 { this.state.onPasswordUpdate === "success" ?
                     <Alert variant="success">
                         Password successfully updated.
                     </Alert>
                     : null
                 }
-                { this.state.onPasswordUpdate === "failed" ?
+                { this.state.onPasswordUpdate === "does-not-match" ?
                     <Alert variant="danger">
                         Password confirmation does not match.
+                    </Alert>
+                    : null
+                }
+                { this.state.onPasswordUpdate === "login-again" ?
+                    <Alert variant="warning">
+                        Please try after logging in again.
                     </Alert>
                     : null
                 }
@@ -105,22 +125,16 @@ export default class ChangeAccountSecurity extends Component {
                     </Alert>
                     : null
                 }
-                <Form.Group controlId="formChangeOldPassword">
-                    <Form.Control type="text" placeholder="Current password" autoComplete="off" onChange={e => this.setField("current_password", e.target.value)} isInvalid={ !!this.state.errors.current_password }/>
-                    <Form.Control.Feedback type="invalid">
-                        { this.state.errors.current_password }
-                    </Form.Control.Feedback>
-                </Form.Group>
                 <Form.Group controlId="formChangeNewPassword">
-                    <Form.Control type="text" placeholder="New password" autoComplete="off" onChange={e => this.setField("new_password", e.target.value)} isInvalid={ !!this.state.errors.new_password }/>
+                    <Form.Control type="text" placeholder="New password" autoComplete="off" spellCheck="false" onChange={e => this.setField("new_password", e.target.value)} isInvalid={ !!this.state.errors.new_password }/>
                     <Form.Control.Feedback type="invalid">
                         { this.state.errors.new_password }
                     </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="formChangeConfirmNewPassword">
-                    <Form.Control type="text" placeholder="Confirm new password" autoComplete="off" onChange={e => this.setField("confirm_password", e.target.value)} isInvalid={ !!this.state.errors.confirm_password }/>
+                    <Form.Control type="text" placeholder="Confirm new password" autoComplete="off" spellCheck="false" onChange={e => this.setField("confirm_new_password", e.target.value)} isInvalid={ !!this.state.errors.confirm_new_password }/>
                     <Form.Control.Feedback type="invalid">
-                        { this.state.errors.confirm_password }
+                        { this.state.errors.confirm_new_password }
                     </Form.Control.Feedback>
                 </Form.Group>
                 <p style={{fontSize: "17px", cursor: "pointer", width: "100px", position: "fixed", right: "0", bottom: "0", marginRight: "40px", marginBottom: "28px"}} onClick={this.onSubmit}>Update Profile</p>

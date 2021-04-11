@@ -148,7 +148,7 @@ h6, h5, h4, p{
   margin: auto;
   text-align: center;
   width: 235px;
-  height: 170px;
+  height: 165px;
   right: 75px;
 	bottom: 20px;
   border-radius: 25px;
@@ -159,7 +159,7 @@ h6, h5, h4, p{
 
 @keyframes expand {
   from {height: 64px;}
-  to {height: 170px;}
+  to {height: 165px;}
 }
 
 
@@ -561,4 +561,10 @@ h6, h5, h4, p{
   border-radius: 0px;
   background-color: #363636;
   color: white;
+}
+
+.informative-text {
+  font-family: Calibri;
+  font-size: 13px;
+  color: #A7A7A7
 }
