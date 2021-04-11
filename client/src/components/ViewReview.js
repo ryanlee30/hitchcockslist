@@ -162,6 +162,10 @@ export default function ViewReview() {
     }
   }
 
+  function hideError() {
+    setShowError(false);
+  }
+
     return (
     <div>
       <div className="logo-banner">
@@ -176,6 +180,7 @@ export default function ViewReview() {
               <FilePond
               className="artwork-upload"
               files={imageFile}
+              onaddfile={hideError}
               onupdatefiles={setImageFile}
               allowMultiple={false}
               allowPaste={false}
@@ -196,7 +201,7 @@ export default function ViewReview() {
             </div>
             : null}
           {showError ?
-            <Alert className="validation-error-msg" variant="danger" onClose={() => setShowError(false)} dismissible>
+            <Alert className="validation-error-msg" variant="danger" onClose={() => setShowError(false)}>
               {errorMsg}
             </Alert>
             : null}

@@ -148,7 +148,7 @@ h6, h5, h4, p{
   margin: auto;
   text-align: center;
   width: 235px;
-  height: 115px;
+  height: 170px;
   right: 75px;
 	bottom: 20px;
   border-radius: 25px;
@@ -159,7 +159,7 @@ h6, h5, h4, p{
 
 @keyframes expand {
   from {height: 64px;}
-  to {height: 115px;}
+  to {height: 170px;}
 }
 
 
@@ -398,7 +398,7 @@ h6, h5, h4, p{
   border-radius: 25px;
   position: relative;
   margin: auto;
-  animation: fade-in 1s;
+  animation: fade-in 0.5s;
 }
 
 .plus-sign {
@@ -445,7 +445,7 @@ h6, h5, h4, p{
   text-align: right;
 }
 
-.fade.validation-error-msg.alert.alert-danger.alert-dismissible.show {
+.fade.validation-error-msg.alert.alert-danger.show {
   margin-top: 20px;
   margin-right: 100px;
 }
@@ -511,7 +511,7 @@ h6, h5, h4, p{
 
 .edit-profile-modal {
   width: 500px;
-  height: 635px;
+  height: 305px;
   background-color: #161616;
   position: absolute;
   top: 50%;
@@ -550,6 +550,13 @@ h6, h5, h4, p{
 }
 
 #formChangeFirstName, #formChangeLastName {
+  border: 0;
+  border-radius: 0px;
+  background-color: #363636;
+  color: white;
+}
+
+#formChangeOldPassword, #formChangeNewPassword, #formChangeConfirmNewPassword {
   border: 0;
   border-radius: 0px;
   background-color: #363636;

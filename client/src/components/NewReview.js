@@ -19,17 +19,16 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, F
 
 export default function NewReview() {
   const history = useHistory();
-  const location = useLocation();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [uid, setUid] = useState("");
   const [imageFile, setImageFile] = useState([]);
-  const [filmTitle, setFilmTitle] = useState("");
-  const [filmDirector, setFilmDirector] = useState("");
   const [filmArtwork, setFilmArtwork] = useState("");
   const [reviewEditor, setReviewEditor] = useState({});
   const [errorMsg, setErrorMsg] = useState("");
   const [showError, setShowError] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [form, setForm] = useState({film_title: "", film_director: ""});
 
   useLayoutEffect(() => {
     async function loadUserData(idToken) {
@@ -46,7 +45,9 @@ export default function NewReview() {
         if (!error && response.statusCode === 200) {
           const userData = response.body;
           setFirstName(userData.firstName);
-          setLastName(userData.lastName.charAt(0).concat("."));
+          if (userData.lastName) {
+            setLastName(userData.lastName.charAt(0).concat("."));
+          }
           setUid(userData.uid);
         }
       });
@@ -124,8 +125,8 @@ export default function NewReview() {
           artworkUrl = (body.data.link);
           const db = firebase.firestore();
           db.collection('films').add({
-            title: filmTitle,
-            director: filmDirector,
+            title: form.film_title,
+            director: form.film_director,
             artwork: artworkUrl,
             reviews: JSON.stringify(contents),
             uid: uid
@@ -139,8 +140,8 @@ export default function NewReview() {
     } else {
       const db = firebase.firestore();
       db.collection('films').add({
-        title: filmTitle,
-        director: filmDirector,
+        title: form.film_title,
+        director: form.film_director,
         artwork: artworkUrl,
         reviews: JSON.stringify(contents),
         uid: uid
@@ -150,54 +151,46 @@ export default function NewReview() {
     }
   }
 
-  function uploadToImgur() {
-    if (imageFile[0]) {
-      const data = {
-        "image": imageFile[0].getFileEncodeBase64String()
-      }
-      const headers = {
-        "Authorization": "Client-ID 2c37087269a1a68"
-      }
-      needle.post("https://api.imgur.com/3/image", data, { headers: headers, multipart: true }, function(err, resp, body) {
-        if (body.status === 200) {
-          console.log("done imgur upload");
-          setFilmArtwork(body.data.link);
-        } else {
-          console.log(resp);
-        }
-      });
+  const setField = (field, value) => {
+    setForm({
+      ...form,
+      [field]: value
+    })
+    if (!!errors[field]) {
+      setErrors({
+        ...errors,
+        [field]: null
+      })
     }
   }
 
   function validate() {
+    const errs = {};
+    if (!form.film_title.trim()) {
+      errs.film_title = "A film title is required."
+    }
+    if (!form.film_director.trim()) {
+      errs.film_director = "Put some respect on their name."
+    }
+    return errs;
+  }
+
+  function onSubmit() {
+    const errs = validate();
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+    }
     let validationErrorMsg = "";
-    if (!filmTitle) {
-      if (!validationErrorMsg) {
-        validationErrorMsg += "Film title";
-      } else {
-        validationErrorMsg += ", film title";
-      }
-    }
-    if (!filmDirector) {
-      if (!validationErrorMsg) {
-        validationErrorMsg += "Director";
-      } else {
-        validationErrorMsg += ", director";
-      }
-    }
     if (reviewEditor.getContents().ops.length === 1) {
       if (reviewEditor.getContents().ops[0].insert.trim() === "") {
-        if (!validationErrorMsg) {
-          validationErrorMsg += "Review";
-        } else {
-          validationErrorMsg += ", review";
-        }
+        validationErrorMsg += "A review without a review? Try again."
       }
     }
-    if (validationErrorMsg) {
-      validationErrorMsg += " field(s) missing";
+    if (!form.film_title.trim() || !form.film_director.trim()) {
+      if (!validationErrorMsg) {
+        validationErrorMsg += "Check your fields and try again."
+      }
     }
-
     if (!validationErrorMsg) {
       persistContent();
       setShowError(false);
@@ -225,7 +218,7 @@ export default function NewReview() {
           labelIdle='Drag & drop or <span class="filepond--label-action">Browse</span>'
         />
         {showError ?
-          <Alert className="validation-error-msg" variant="danger" onClose={() => setShowError(false)} dismissible>
+          <Alert className="validation-error-msg" variant="danger" onClose={() => setShowError(false)}>
             {errorMsg}
           </Alert>
           : null}
@@ -236,16 +229,22 @@ export default function NewReview() {
           <div className="review-console-header-container">
             <div className="review-console-header-head">
               <h5>About your review</h5>
-              <Link to="#" className="redirect-btn-submit" style={{textDecoration: 'none', float: 'right'}} onClick={validate}>Submit</Link>
+              <Link to="#" className="redirect-btn-submit" style={{textDecoration: 'none', float: 'right'}} onClick={onSubmit}>Submit</Link>
             </div>
-            <div className="review-console-film-info">
+            <Form className="review-console-film-info">
               <Form.Group controlId="formFilmTitle">
-                  <Form.Control type="text" placeholder="Film title" autoComplete="off" onChange={e => setFilmTitle(e.target.value)}/>
+                  <Form.Control type="text" placeholder="Film title" autoComplete="off" onChange={e => setField("film_title", e.target.value)} onKeyPress={validate} isInvalid={ !!errors.film_title }/>
+                  <Form.Control.Feedback type="invalid">
+                    { errors.film_title }
+                  </Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="formFilmDirector">
-                  <Form.Control type="text" placeholder="Director" autoComplete="off" onChange={e => setFilmDirector(e.target.value)}/>
+                  <Form.Control type="text" placeholder="Director" autoComplete="off" onChange={e => setField("film_director", e.target.value)} onKeyPress={validate} isInvalid={ !!errors.film_director }/>
+                  <Form.Control.Feedback type="invalid">
+                  { errors.film_director }
+                  </Form.Control.Feedback>
               </Form.Group>
-            </div>
+            </Form>
           </div>
           <div className="text-editor-container">
             <div id="text-editor">

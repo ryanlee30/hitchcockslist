@@ -6,7 +6,6 @@ import { useHistory, useLocation, Link } from 'react-router-dom';
 import new_review from '../imgs/new_review.png'
 import needle from 'needle';
 import AccountMenu from './AccountMenu';
-import ProfilePicBuilder from './ProfilePicBuilder';
 
 export default function Home() {
   const history = useHistory();
@@ -108,7 +107,7 @@ export default function Home() {
       <div className="logo-banner">
         <div className="logo-btn-home">Hitchcock's <br></br> List</div>
       </div>
-      <AccountMenu firstName={firstName} lastName={lastName} uid={uid}/>
+      <AccountMenu firstName={firstName} lastName={lastName} uid={uid} history={history}/>
       <div className="top-banner">
         <Link to="/review"><img className="new-review" src={new_review} alt="New review"/></Link>
       </div>
