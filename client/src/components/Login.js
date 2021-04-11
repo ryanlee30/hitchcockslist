@@ -2,7 +2,7 @@ import '../App.css';
 import { React, useState, useLayoutEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { auth, firebase } from '../firebase';
-import { Form } from 'react-bootstrap'
+import { Form, Alert } from 'react-bootstrap'
 import GoogleButton from 'react-google-button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 

@@ -100,7 +100,6 @@ export default class ChangeAccountSecurity extends Component {
         return (
             <div>
                 <h5 style={{marginBottom: "20px"}}>Change Password</h5>
-                <p className="informative-text">A password change requires a recent log in.</p>
                 { this.state.onPasswordUpdate === "success" ?
                     <Alert variant="success">
                         Password successfully updated.
@@ -125,6 +124,7 @@ export default class ChangeAccountSecurity extends Component {
                     </Alert>
                     : null
                 }
+                <p className="informative-text">A password change requires a recent log in.</p>
                 <Form.Group controlId="formChangeNewPassword">
                     <Form.Control type="text" placeholder="New password" autoComplete="off" spellCheck="false" onChange={e => this.setField("new_password", e.target.value)} isInvalid={ !!this.state.errors.new_password }/>
                     <Form.Control.Feedback type="invalid">

@@ -30,6 +30,7 @@ export default function ViewReview() {
   const [showAddBtn, setShowAddBtn] = useState(true);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [uid, setUid] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [showError, setShowError] = useState(false);
   const [showFilePond, setShowFilePond] = useState(false);
@@ -44,6 +45,8 @@ export default function ViewReview() {
     } else {
       setFirstName(location.state.firstName);
       setLastName(location.state.lastName);
+      setUid(location.state.uid);
+      console.log(location.state);
   
       async function fetchReviews() {
         const options = {
@@ -171,6 +174,7 @@ export default function ViewReview() {
       <div className="logo-banner">
         <Link className="logo-btn" to="/home">Hitchcock's <br></br> List</Link>
       </div>
+      <AccountMenu firstName={firstName} lastName={lastName} uid={uid} history={history}/>
       <div className="review-banner">
         <div className="artwork-label">
           Poster | Artwork
@@ -206,7 +210,6 @@ export default function ViewReview() {
             </Alert>
             : null}
         </div>
-        <AccountMenu firstName={firstName} lastName={lastName}/>
       </div>
       <div className="review-body">
         <div className="review-console">

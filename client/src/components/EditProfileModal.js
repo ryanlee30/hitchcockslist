@@ -16,7 +16,7 @@ class EditProfileModal extends Component {
             case "account-security":
                 return <ChangeAccountSecurity />;
             default:
-                return <ChangeProfile uid={this.props.uid} />;
+                return <ChangeProfile uid={this.props.uid} history={this.props.history} />;
         }
     }
 

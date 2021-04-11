@@ -44,7 +44,13 @@ export default function NewReview() {
       needle.get("http://localhost:4000/user-info", options, function(error, response) {
         if (!error && response.statusCode === 200) {
           const userData = response.body;
-          setFirstName(userData.firstName);
+          if (userData.firstName) {
+            if (userData.firstName.length > 12) {
+              setFirstName(userData.firstName.charAt(0).concat("."));
+            } else {
+              setFirstName(userData.firstName);
+            }
+          }
           if (userData.lastName) {
             setLastName(userData.lastName.charAt(0).concat("."));
           }
@@ -205,6 +211,7 @@ export default function NewReview() {
       <div className="logo-banner">
         <Link className="logo-btn" to="/home">Hitchcock's <br></br> List</Link>
       </div>
+      <AccountMenu firstName={firstName} lastName={lastName} uid={uid} history={history}/>
       <div className="review-banner">
         <div className="artwork-label">
           Poster | Artwork
@@ -222,7 +229,6 @@ export default function NewReview() {
             {errorMsg}
           </Alert>
           : null}
-          <AccountMenu firstName={firstName} lastName={lastName}/>
       </div>
       <div className="review-body">
         <div className="review-console">

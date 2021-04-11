@@ -135,6 +135,7 @@ h6, h5, h4, p{
   font-size: 17px;
   animation: fade-in 1s;
   cursor: pointer;
+  z-index: 10;
 }
 
 .account-menu:hover {
@@ -155,6 +156,7 @@ h6, h5, h4, p{
   font-size: 17px;
   animation: expand 0.3s;
   overflow: hidden;
+  z-index: 10;
 }
 
 @keyframes expand {

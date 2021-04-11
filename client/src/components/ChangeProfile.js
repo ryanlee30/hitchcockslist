@@ -8,6 +8,7 @@ export default class ChangeProfile extends Component {
     constructor() {
         super();
         this.state = {
+            onPasswordUpdate: "",
             errors: {},
             form: {first_name: "", last_name: ""},
             // image: "",
@@ -59,9 +60,27 @@ export default class ChangeProfile extends Component {
                 firstName: this.state.form.first_name,
                 lastName: this.state.form.last_name,
                 // profilePicture: this.handleSave()
+            }).then(() => {
+                if (this.props.history) {
+                    if (this.props.history.location.pathname === "/review/v") {
+                        let history = this.props.history;
+                        setTimeout(function() {
+                            history.push("/home");
+                        }, 750);
+                    } else {
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 750);
+                    }
+                }
+            });
+            this.setState({
+                onPasswordUpdate: "success"
             });
         } else {
-            console.log("Could not find uid!");
+            this.setState({
+                onPasswordUpdate: "unknown"
+            });
         }
     }
 
@@ -86,9 +105,15 @@ export default class ChangeProfile extends Component {
         const errs = {};
         if (!this.state.form.first_name.trim()) {
             errs.first_name = "First name required."
+            this.setState({
+                onPasswordUpdate: ""
+            });
         }
         if (!this.state.form.last_name.trim()) {
             errs.last_name = "Last name required."
+            this.setState({
+                onPasswordUpdate: ""
+            });
         }
         return errs;
     }
@@ -108,6 +133,19 @@ export default class ChangeProfile extends Component {
         return (
             <div>
                 <h5 style={{marginBottom: "20px"}}>Your Profile</h5>
+                { this.state.onPasswordUpdate === "success" ?
+                    <Alert variant="success">
+                        Your name was successfully updated.
+                    </Alert>
+                    : null
+                }
+                { this.state.onPasswordUpdate === "unknown" ?
+                    <Alert variant="danger">
+                        Something went wrong. Please contact us.
+                    </Alert>
+                    : null
+                }
+                <p className="informative-text">Changing your name will refresh the page, so please submit your work first.</p>
                 <Form.Group controlId="formChangeFirstName">
                     <Form.Control type="text" placeholder="First name" autoComplete="off" spellCheck="false" onChange={e => this.setField("first_name", e.target.value)} isInvalid={ !!this.state.errors.first_name }/>
                     <Form.Control.Feedback type="invalid">

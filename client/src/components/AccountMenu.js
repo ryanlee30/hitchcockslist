@@ -53,7 +53,7 @@ class AccountMenu extends Component {
             <div>
                 { this.state.showEditProfile ?
                     <div className="edit-profile-modal">
-                        <EditProfileModal uid={this.props.uid}/>
+                        <EditProfileModal uid={this.props.uid} history={this.props.history}/>
                     </div>
                 : null}
                 { this.state.showAccountMenu ?

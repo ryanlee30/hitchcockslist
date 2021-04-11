@@ -36,7 +36,13 @@ export default function Home() {
       needle.get("http://localhost:4000/user-info", options, function(error, response) {
         if (!error && response.statusCode === 200) {
           const userData = response.body;
-          setFirstName(userData.firstName);
+          if (userData.firstName) {
+            if (userData.firstName.length > 12) {
+              setFirstName(userData.firstName.charAt(0).concat("."));
+            } else {
+              setFirstName(userData.firstName);
+            }
+          }
           if (userData.lastName) {
             setLastName(userData.lastName.charAt(0).concat("."));
           }
@@ -99,7 +105,7 @@ export default function Home() {
   }, [])
 
   function goToViewReview(filmId) {
-    history.push("/review/v", { filmId: filmId, firstName: firstName, lastName: lastName });
+    history.push("/review/v", { filmId: filmId, firstName: firstName, lastName: lastName, uid: uid });
   }
 
   return (
