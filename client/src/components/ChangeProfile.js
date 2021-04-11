@@ -8,11 +8,8 @@ export default class ChangeProfile extends Component {
     constructor() {
         super();
         this.state = {
-            firstName: "",
-            lastName: "",
-            showErrorMsg: false,
-            errorMsg: "",
-            validationErrorMsg: "",
+            errors: {},
+            form: {first_name: "", last_name: ""},
             // image: "",
             // preview: null,
             // scale: 1.2,
@@ -21,7 +18,8 @@ export default class ChangeProfile extends Component {
             // borderRadius: 999,
             // postion: { x: 0.5, y: 0.5 },
         }
-        this.validate = this.validate.bind(this);
+        this.setField = this.setField.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
         // this.handleSave = this.handleSave.bind(this);
     }
 
@@ -58,8 +56,8 @@ export default class ChangeProfile extends Component {
         if (this.props.uid) {
             const db = firebase.firestore();
             db.collection('users').doc(this.props.uid).update({
-                firstName: this.state.firstName,
-                lastName: this.state.lastName,
+                firstName: this.state.form.first_name,
+                lastName: this.state.form.last_name,
                 // profilePicture: this.handleSave()
             });
         } else {
@@ -67,44 +65,60 @@ export default class ChangeProfile extends Component {
         }
     }
 
+    setField = (field, value) => {
+        this.setState({
+            form: {
+                ...this.state.form,
+                [field]: value
+            }
+        });
+        if (!!this.state.errors[field]) {
+            this.setState({
+                errors: {
+                    ...this.state.errors,
+                    [field]: null
+                }
+            });
+        }
+    }
+    
     validate() {
-        let validationErrorMsg = "";
-        if (!this.state.firstName.trim()) {
-            validationErrorMsg += "First name";
+        const errs = {};
+        if (!this.state.form.first_name.trim()) {
+            errs.first_name = "First name required."
         }
-        if (!this.state.lastName.trim()) {
-          if (!validationErrorMsg) {
-            validationErrorMsg += "Last name";
-          } else {
-            validationErrorMsg += ", last name";
-          }
+        if (!this.state.form.last_name.trim()) {
+            errs.last_name = "Last name required."
         }
-        if (validationErrorMsg) {
-            validationErrorMsg += " field(s) missing";
-        }
-        if (!validationErrorMsg) {
-            this.persistData();
-            this.setState({ showError: false });
+        return errs;
+    }
+    
+    onSubmit() {
+        const errs = this.validate();
+        if (Object.keys(errs).length > 0) {
+            this.setState({
+                errors: errs
+            });
         } else {
-            this.setState({ errorMsg: validationErrorMsg });
-            this.setState({ showError: true });
+            this.persistData();
         }
-      }
+    }
 
     render() {
         return (
             <div>
-                {this.state.showError ?
-                    <Alert className="validation-error-msg" variant="danger" onClose={() => this.setState({ showError: true })} dismissible>
-                        {this.state.errorMsg}
-                    </Alert>
-                    : null}
                 <h5 style={{marginBottom: "20px"}}>Your Profile</h5>
                 <Form.Group controlId="formChangeFirstName">
-                  <Form.Control type="text" placeholder="First name" autoComplete="off" onChange={e => this.setState({ firstName: e.target.value })}/>
+                    <Form.Control type="text" placeholder="First name" autoComplete="off" onChange={e => this.setField("first_name", e.target.value)} isInvalid={ !!this.state.errors.first_name }/>
+                    <Form.Control.Feedback type="invalid">
+                        { this.state.errors.first_name }
+                    </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="formChangeLastName">
-                    <Form.Control type="text" placeholder="Last name" autoComplete="off" onChange={e => this.setState({ lastName: e.target.value })}/>
+                    <Form.Control type="text" placeholder="Last name" autoComplete="off" onChange={e => this.setField("last_name", e.target.value)} isInvalid={ !!this.state.errors.last_name }/>
+                    <Form.Control.Feedback type="invalid">
+                        { this.state.errors.last_name }
+                    </Form.Control.Feedback>
                 </Form.Group>
                 {/* <p style={{marginTop: "40px"}}>Profile Picture</p>
                 <AvatarEditor
@@ -121,7 +135,7 @@ export default class ChangeProfile extends Component {
                     Upload a photo
                 </label>
                 <input id="upload-pp" style={{marginTop: "15px", display: "none"}} name="newImage" type="file" onChange={this.handleNewImage} /> */}
-                <p style={{fontSize: "17px", cursor: "pointer", width: "100px", float: "right", marginTop: "69px"}} onClick={this.validate}>Update Profile</p>
+                <p style={{fontSize: "17px", cursor: "pointer", width: "100px", position: "fixed", right: "0", bottom: "0", marginRight: "40px", marginBottom: "28px"}} onClick={this.onSubmit}>Update Profile</p>
             </div>
         )
     }
