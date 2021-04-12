@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^12.1.10",
     "bootstrap": "^4.6.0",
     "date-and-time": "^0.14.2",
+    "email-validator": "^2.0.4",
     "filepond": "^4.25.1",
     "filepond-plugin-file-encode": "^2.1.9",
     "filepond-plugin-image-exif-orientation": "^1.0.9",

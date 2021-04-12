@@ -570,3 +570,10 @@ h6, h5, h4, p{
   font-size: 13px;
   color: #A7A7A7
 }
+
+.field-error.invalid-feedback {
+  text-align: left;
+  font-family: Calibri;
+  font-size: 14px;
+  color: #c7e7ff;
+}

@@ -26,16 +26,19 @@ export default class ChangeAccountSecurity extends Component {
         let user = auth.currentUser;
         user.updatePassword(this.state.form.new_password).then((msg) => {
             this.setState({
-                onPasswordUpdate: "success"
+                onPasswordUpdate: "success",
+                errors: {},
             });
         }).catch((error) => {
             if (error.code === "auth/requires-recent-login") {
                 this.setState({
-                    onPasswordUpdate: "login-again"
+                    onPasswordUpdate: "login-again",
+                    errors: {},
                 });
             } else {
                 this.setState({
-                    onPasswordUpdate: "unknown"
+                    onPasswordUpdate: "unknown",
+                    errors: {},
                 });
             }
         });
@@ -61,23 +64,28 @@ export default class ChangeAccountSecurity extends Component {
     validate() {
         const errs = {};
         if (!this.state.form.new_password.trim()) {
-            errs.new_password = "Please provide a new password."
+            errs.new_password = "Please provide a new password.";
             this.setState({
                 onPasswordUpdate: ""
             });
         }
         if (!this.state.form.confirm_new_password.trim()) {
-            errs.confirm_new_password = "Please confirm your new password."
+            errs.confirm_new_password = "Please confirm your new password.";
             this.setState({
                 onPasswordUpdate: ""
             });
         }
+        if (this.state.form.new_password.trim().length < 6) {
+            errs.new_password = "New password must contain 6 or more characters.";
+        }
         if (this.state.form.new_password !== this.state.form.confirm_new_password) {
+            errs.new_password = "Passwords didn't match. Please try again.";
             this.setState({
                 onPasswordUpdate: "does-not-match"
             });
         }
         if (!this.state.form.new_password.trim() && this.state.form.confirm_new_password.trim()) {
+            errs.new_password = "Please provide a new password.";
             this.setState({
                 onPasswordUpdate: ""
             });
@@ -106,12 +114,12 @@ export default class ChangeAccountSecurity extends Component {
                     </Alert>
                     : null
                 }
-                { this.state.onPasswordUpdate === "does-not-match" ?
+                {/* { this.state.onPasswordUpdate === "does-not-match" ?
                     <Alert variant="danger">
                         Password confirmation does not match.
                     </Alert>
                     : null
-                }
+                } */}
                 { this.state.onPasswordUpdate === "login-again" ?
                     <Alert variant="warning">
                         Please try after logging in again.
@@ -126,13 +134,13 @@ export default class ChangeAccountSecurity extends Component {
                 }
                 <p className="informative-text">A password change requires a recent log in.</p>
                 <Form.Group controlId="formChangeNewPassword">
-                    <Form.Control type="text" placeholder="New password" autoComplete="off" spellCheck="false" onChange={e => this.setField("new_password", e.target.value)} isInvalid={ !!this.state.errors.new_password }/>
+                    <Form.Control type="password" placeholder="New password" autoComplete="off" spellCheck="false" onChange={e => this.setField("new_password", e.target.value)} isInvalid={ !!this.state.errors.new_password }/>
                     <Form.Control.Feedback type="invalid">
                         { this.state.errors.new_password }
                     </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="formChangeConfirmNewPassword">
-                    <Form.Control type="text" placeholder="Confirm new password" autoComplete="off" spellCheck="false" onChange={e => this.setField("confirm_new_password", e.target.value)} isInvalid={ !!this.state.errors.confirm_new_password }/>
+                    <Form.Control type="password" placeholder="Confirm new password" autoComplete="off" spellCheck="false" onChange={e => this.setField("confirm_new_password", e.target.value)} isInvalid={ !!this.state.errors.confirm_new_password }/>
                     <Form.Control.Feedback type="invalid">
                         { this.state.errors.confirm_new_password }
                     </Form.Control.Feedback>
