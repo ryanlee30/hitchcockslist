@@ -43,7 +43,7 @@ export default function Signup() {
   
   function onEnter(event) {
     if (event.key === "Enter") {
-      createUser();
+      onSubmit();
     }
   }
 

@@ -5,7 +5,7 @@ import Unprotected from './components/Unprotected';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Home from './components/Home';
-import User from './components/User';
+import ForgotPassword from './components/ForgotPassword';
 import NewReview from './components/NewReview';
 import ViewReview from './components/ViewReview';
 
@@ -23,6 +23,9 @@ export default class App extends Component {
             </Route>
             <Route path={"/login"}>
               <Unprotected children={<Login />}/>
+            </Route>
+            <Route path={"/forgot-password"}>
+              <Unprotected children={<ForgotPassword />}/>
             </Route>
             <Route path={"/home"} render={() => (
               isLoggedIn() ? (

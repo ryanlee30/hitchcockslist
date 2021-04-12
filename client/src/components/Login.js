@@ -69,7 +69,7 @@ export default function Login() {
 
   function onEnter(event) {
     if (event.key === "Enter") {
-      passwordAuthentication();
+      onSubmit();
     }
   }
 
@@ -129,8 +129,8 @@ export default function Login() {
           </Form.Control.Feedback>
         </Form.Group>
         <Link to="#" className="redirect-btn" style={{textDecoration: 'none'}} onClick={onSubmit}>Log in</Link>
-        <div style={{paddingTop: 15}}>
-          <Link to="#" className="forgot-pwd-btn" style={{textDecoration: 'none'}}>Forgot your password?</Link>
+        <div>
+          <Link to="/forgot-password" className="forgot-pwd-btn" style={{textDecoration: 'none'}}>Forgot your password?</Link>
         </div>
       </div>
   );

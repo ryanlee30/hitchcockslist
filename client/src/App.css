@@ -84,8 +84,7 @@ h6, h5, h4, p{
 }
 
 .forgot-pwd-btn {
-  padding-top: 20px;
-  font-size: calc(5px + 1vmin);
+  font-size: 14px;
   color: white;
 }
 
