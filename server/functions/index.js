@@ -1,3 +1,4 @@
+const functions = require("firebase-functions");
 const express = require("express");
 const cors = require("cors");
 const authorization = require("./authorization");
@@ -33,3 +34,5 @@ app.get("/fetch-reviews", (request, response) => {
 });
 
 app.listen(PORT, () => console.log("The server is running at PORT 4000"));
+
+exports.app = functions.https.onRequest(app);
