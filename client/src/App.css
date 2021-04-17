@@ -3,6 +3,11 @@
   src: local('Hitchcock'), url(./fonts/Hitchcock.ttf) format('truetype');
 }
 
+@font-face {
+  font-family: 'Calibri';
+  src: local('Calibri'), url(./fonts/Calibri.ttf) format('truetype');
+}
+
 img {
   -webkit-user-drag: none;
   -khtml-user-drag: none;
