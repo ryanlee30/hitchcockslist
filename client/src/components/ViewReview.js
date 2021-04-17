@@ -46,7 +46,6 @@ export default function ViewReview() {
       setFirstName(location.state.firstName);
       setLastName(location.state.lastName);
       setUid(location.state.uid);
-      console.log(location.state);
   
       async function fetchReviews() {
         const options = {
@@ -54,7 +53,7 @@ export default function ViewReview() {
             Authorization: "Bearer " + localStorage.getItem("@token"),
           }
         }
-        needle.get("http://localhost:4000/fetch-reviews?filmId="+ location.state.filmId, options, function(error, response) {
+        needle.get("https://us-central1-hitchcockslist.cloudfunctions.net/app/fetch-reviews?filmId="+ location.state.filmId, options, function(error, response) {
           if (!error && response.statusCode === 200) {
             const reviewData = response.body;
             setFilmTitle(reviewData.filmTitle);

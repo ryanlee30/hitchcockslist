@@ -7,7 +7,7 @@ export default function User() {
 
   useLayoutEffect(() => {
     async function loadUserData() {
-      const response = await fetch("http://localhost:4000/user-info", {
+      const response = await fetch("https://us-central1-hitchcockslist.cloudfunctions.net/app/user-info", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("@token"),
         },
