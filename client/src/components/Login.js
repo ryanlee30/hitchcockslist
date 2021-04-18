@@ -1,5 +1,5 @@
 import '../App.css';
-import { React, useState, useLayoutEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { auth, firebase } from '../firebase';
 import { Form, Alert } from 'react-bootstrap'
@@ -13,7 +13,7 @@ export default function Login() {
 
   const history = useHistory();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (localStorage.getItem("@token")) {
       history.replace("/home");
     }

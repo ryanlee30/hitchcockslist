@@ -11,7 +11,7 @@ class AccountMenu extends Component {
     constructor() {
         super();
         this.state = {
-            showAccountMenu: false,
+            expandAccountMenu: false,
             showEditProfile: false,
         }
         this.switchAccountMenuState = this.switchAccountMenuState.bind(this);
@@ -20,7 +20,7 @@ class AccountMenu extends Component {
     }
 
     switchAccountMenuState() {
-        this.setState({ showAccountMenu: !this.state.showAccountMenu });
+        this.setState({ expandAccountMenu: !this.state.expandAccountMenu });
     }
 
     switchEditProfileModalState() {
@@ -28,7 +28,7 @@ class AccountMenu extends Component {
     }
 
     handleClickOutside = () => {
-        if (this.state.showAccountMenu) {
+        if (this.state.expandAccountMenu) {
             this.switchAccountMenuState();
         }
         if (this.state.showEditProfile) {
@@ -53,10 +53,10 @@ class AccountMenu extends Component {
             <div>
                 { this.state.showEditProfile ?
                     <div className="edit-profile-modal">
-                        <EditProfileModal uid={this.props.uid} history={this.props.history}/>
+                        <EditProfileModal firstName={this.props.firstName} lastName={this.props.lastName} email={this.props.email} uid={this.props.uid} history={this.props.history}/>
                     </div>
-                : null}
-                { this.state.showAccountMenu ?
+                : null }
+                { this.state.expandAccountMenu ?
                     <div className="account-menu-opened">
                         <div className="account-name">
                             {this.props.firstName} {this.props.lastName}&nbsp;

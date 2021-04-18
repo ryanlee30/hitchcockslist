@@ -530,17 +530,30 @@ h6, h5, h4, p{
 
 .profile-change-options {
   position: absolute;
-  width: 35%;
-  height: 100%;
+  width: 45%;
+  height: 80%;
   padding: 30px 0 0 40px;
+}
+
+.profile-change-user-info {
+  position: absolute;
+  top: 80%;
+  width: 45%;
+  height: 20%;
+  padding: 0 0 30px 40px;
+  color: #A7A7A7;
+  font-family: Calibri;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow:ellipsis;
 }
 
 .profile-change-content {
   color: white;
   position: absolute;
-  width: 65%;
-  left: 35%;
-  padding: 30px 40px 0 40px;
+  width: 55%;
+  left: 45%;
+  padding: 30px 30px 0 10px;
   height: 100%;
   overflow: hidden;
 }

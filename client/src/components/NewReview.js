@@ -1,6 +1,6 @@
 import '../App.css';
 import 'filepond/dist/filepond.min.css'
-import { React, useLayoutEffect, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import { Form, Alert } from 'react-bootstrap';
 import { auth } from '../firebase';
@@ -23,14 +23,15 @@ export default function NewReview() {
   const [lastName, setLastName] = useState("");
   const [uid, setUid] = useState("");
   const [imageFile, setImageFile] = useState([]);
-  const [filmArtwork, setFilmArtwork] = useState("");
   const [reviewEditor, setReviewEditor] = useState({});
   const [errorMsg, setErrorMsg] = useState("");
   const [showError, setShowError] = useState(false);
   const [errors, setErrors] = useState({});
   const [form, setForm] = useState({film_title: "", film_director: ""});
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     async function loadUserData(idToken) {
       let token = localStorage.getItem("@token");
       if (idToken) {
@@ -41,7 +42,7 @@ export default function NewReview() {
           Authorization: "Bearer " + token,
         }
       }
-      needle.get("https://us-central1-hitchcockslist.cloudfunctions.net/app/user-info", options, function(error, response) {
+      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/user-info", options, function(error, response) {
         if (!error && response.statusCode === 200) {
           const userData = response.body;
           if (userData.firstName) {
@@ -54,6 +55,8 @@ export default function NewReview() {
           if (userData.lastName) {
             setLastName(userData.lastName.charAt(0).concat("."));
           }
+          setShowAccountMenu(true);
+          setUserEmail(userData.email);
           setUid(userData.uid);
         }
       });
@@ -65,7 +68,7 @@ export default function NewReview() {
           Authorization: "Bearer " + localStorage.getItem("@token"),
         }
       }
-      needle.get("https://us-central1-hitchcockslist.cloudfunctions.net/app/is-authorized", options, function(error, response) {
+      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/is-authorized", options, function(error, response) {
         if (error || response.statusCode === 401) {
           auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -211,7 +214,9 @@ export default function NewReview() {
       <div className="logo-banner">
         <Link className="logo-btn" to="/home">Hitchcock's <br></br> List</Link>
       </div>
-      <AccountMenu firstName={firstName} lastName={lastName} uid={uid} history={history}/>
+      { showAccountMenu ?
+        <AccountMenu firstName={firstName} lastName={lastName} email={userEmail} uid={uid} history={history}/>
+      : null }
       <div className="review-banner">
         <div className="artwork-label">
           Poster | Artwork

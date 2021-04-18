@@ -1,6 +1,6 @@
 import '../App.css';
 import 'filepond/dist/filepond.min.css'
-import { React, useLayoutEffect, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 import needle from 'needle';
@@ -27,7 +27,7 @@ export default function ViewReview() {
   const [filmReviewsRaw, setFilmReviewsRaw] = useState("");
   const [showEditor, setShowEditor] = useState(false);
   const [reviewEditor, setReviewEditor] = useState({});
-  const [showAddBtn, setShowAddBtn] = useState(true);
+  const [showAddBtn, setShowAddBtn] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [uid, setUid] = useState("");
@@ -37,14 +37,17 @@ export default function ViewReview() {
   const [showArtwork, setShowArtwork] = useState(true);
   const [imageFile, setImageFile] = useState([]);
   const [showChangeArtworkLabel, setShowChangeArtworkLabel] = useState(false);
+  const [loadReviews, setLoadReviews] = useState(true);
+  const [userEmail, setUserEmail] = useState("");
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!location.state) {
       // create a bad request page
       history.push("/home");
     } else {
       setFirstName(location.state.firstName);
       setLastName(location.state.lastName);
+      setUserEmail(location.state.email);
       setUid(location.state.uid);
   
       async function fetchReviews() {
@@ -53,18 +56,25 @@ export default function ViewReview() {
             Authorization: "Bearer " + localStorage.getItem("@token"),
           }
         }
-        needle.get("https://us-central1-hitchcockslist.cloudfunctions.net/app/fetch-reviews?filmId="+ location.state.filmId, options, function(error, response) {
+        needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/fetch-reviews?filmId="+ location.state.filmId, options, function(error, response) {
           if (!error && response.statusCode === 200) {
             const reviewData = response.body;
             setFilmTitle(reviewData.filmTitle);
-            setFilmDirector(reviewData.filmDirector);
+            if (reviewData.filmDirector) {
+              setFilmDirector("by " + reviewData.filmDirector);
+            }
             setFilmArtwork(reviewData.filmArtwork);
             setFilmReviewsRaw(reviewData.reviews);
             setFilmReviews(new Reviews(reviewData.reviews).getReviews());
+            setShowAddBtn(true);
           }
         });
       }
-      fetchReviews();
+
+      if (loadReviews) {
+        fetchReviews();
+        setLoadReviews(false);
+      }
   
       if (showEditor) {
         let toolbarOptions = [
@@ -85,7 +95,7 @@ export default function ViewReview() {
         setReviewEditor(editor);
       }
     }
-  }, [showEditor])
+  }, [showEditor, loadReviews])
 
   // called by both add and remove review fn
   function persistContent() {
@@ -96,6 +106,7 @@ export default function ViewReview() {
       reviews: updateReviews.addReview(editor.getContents())
     }).then(() => {
       setShowEditor(false);
+      setLoadReviews(true);
       setShowAddBtn(true);
     });
   }
@@ -115,7 +126,7 @@ export default function ViewReview() {
     let validationErrorMsg = "";
     if (reviewEditor.getContents().ops.length === 1) {
       if (reviewEditor.getContents().ops[0].insert.trim() === "") {
-        validationErrorMsg += "Review is empty"
+        validationErrorMsg += "A review without a review? Try again."
       }
     }
 
@@ -173,7 +184,7 @@ export default function ViewReview() {
       <div className="logo-banner">
         <Link className="logo-btn" to="/home">Hitchcock's <br></br> List</Link>
       </div>
-      <AccountMenu firstName={firstName} lastName={lastName} uid={uid} history={history}/>
+      <AccountMenu firstName={firstName} lastName={lastName} email={userEmail} uid={uid} history={history}/>
       <div className="review-banner">
         <div className="artwork-label">
           Poster | Artwork
@@ -215,7 +226,7 @@ export default function ViewReview() {
           <div className="review-console-header-container">
             <div className="view-review-console-header-head">
               <h4>{filmTitle}</h4>
-              <h5>by&nbsp;{filmDirector}</h5>
+              <h5>{filmDirector}</h5>
             </div>
           </div>
           <div className="review-reviews">

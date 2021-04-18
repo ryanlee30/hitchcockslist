@@ -5,19 +5,20 @@ async function getUserInfo(uid) {
     const usersRef = db.collection("users");
     const userRef = await usersRef.where("uid", "==", uid).get();
     if (userRef.size !== 0) {
-        return { firstName: userRef.docs[0].data().firstName, lastName: userRef.docs[0].data().lastName, uid: userRef.docs[0].data().uid };
+        return { firstName: userRef.docs[0].data().firstName, lastName: userRef.docs[0].data().lastName, email: userRef.docs[0].data().email, uid: userRef.docs[0].data().uid };
     } else {
         const result = await admin.auth().getUser(uid)
         .then((userRecord) => {
                 let userInfo = {
                     firstName: userRecord.displayName.split(" ")[0],
                     lastName: userRecord.displayName.split(" ")[1],
+                    email: userRecord.email,
                     profilePicture: "",
                     uid: uid,
                     created: userRecord.metadata.creationTime
                 }
                 admin.firestore().collection('users').doc(uid).set(userInfo);
-                return { firstName: userInfo.firstName, lastName: userInfo.lastName, uid: userInfo.uid };
+                return { firstName: userInfo.firstName, lastName: userInfo.lastName, email: userInfo.email, uid: userInfo.uid };
             });
         return result;
     }

@@ -35,4 +35,6 @@ app.get("/fetch-reviews", (request, response) => {
 
 app.listen(PORT, () => console.log("The server is running at PORT 4000"));
 
-exports.app = functions.https.onRequest(app);
+exports.app = functions
+    .region('us-west2')
+    .https.onRequest(app);

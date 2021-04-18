@@ -1,5 +1,5 @@
 import '../App.css';
-import { React, useState, useLayoutEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { firebase } from '../firebase';
 import { Form } from 'react-bootstrap'
@@ -12,7 +12,7 @@ export default function Signup() {
 
   const history = useHistory();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (localStorage.getItem("@token")) {
       history.replace("/home", { modalShow: true })
     }
@@ -22,7 +22,7 @@ export default function Signup() {
     firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
         .then((userCredential) => {
             const user = userCredential.user;
-            addUser(user.uid);
+            addUser(user.uid, user.email);
             history.push('/login');
         })
         .catch((error) => {
@@ -30,11 +30,12 @@ export default function Signup() {
         });
   }
 
-  function addUser(uid) {
+  function addUser(uid, email) {
     const db = firebase.firestore();
     db.collection('users').doc(uid).set({
       firstName: form.firstName,
       lastName: form.lastName,
+      email: email,
       profilePicture: "",
       uid: uid,
       created: firebase.firestore.Timestamp.now()

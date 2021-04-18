@@ -1,5 +1,5 @@
 import '../App.css';
-import { React, useLayoutEffect, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { auth } from '../firebase';
 import SignOutFirstModal from './SignOutFirstModal';
 import { useHistory, useLocation, Link } from 'react-router-dom';
@@ -14,9 +14,11 @@ export default function Home() {
   const [films, setFilms] = useState([]);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [uid, setUid] = useState("");
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (location.state) {
       if (location.state.modalShow) {
         setModalShow(true);
@@ -33,7 +35,7 @@ export default function Home() {
           Authorization: "Bearer " + token,
         }
       }
-      needle.get("https://us-central1-hitchcockslist.cloudfunctions.net/app/user-info", options, function(error, response) {
+      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/user-info", options, function(error, response) {
         if (!error && response.statusCode === 200) {
           const userData = response.body;
           if (userData.firstName) {
@@ -46,6 +48,8 @@ export default function Home() {
           if (userData.lastName) {
             setLastName(userData.lastName.charAt(0).concat("."));
           }
+          setShowAccountMenu(true);
+          setUserEmail(userData.email);
           setUid(userData.uid);
         }
       });
@@ -61,7 +65,7 @@ export default function Home() {
           Authorization: "Bearer " + token,
         }
       }
-      needle.get("https://us-central1-hitchcockslist.cloudfunctions.net/app/fetch-films", options, function(error, response) { 
+      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/fetch-films", options, function(error, response) { 
         if (!error && response.statusCode === 200) {
           const filmsData = response.body;
           if (filmsData) {
@@ -77,7 +81,7 @@ export default function Home() {
           Authorization: "Bearer " + localStorage.getItem("@token"),
         }
       }
-      needle.get("https://us-central1-hitchcockslist.cloudfunctions.net/app/is-authorized", options, function(error, response) {
+      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/is-authorized", options, function(error, response) {
         if (error || response.statusCode === 401) {
           auth.onAuthStateChanged(function(user) {
             if (user) {
@@ -105,7 +109,7 @@ export default function Home() {
   }, [])
 
   function goToViewReview(filmId) {
-    history.push("/review/v", { filmId: filmId, firstName: firstName, lastName: lastName, uid: uid });
+    history.push("/review/v", { filmId: filmId, firstName: firstName, lastName: lastName, email: userEmail, uid: uid });
   }
 
   return (
@@ -113,7 +117,9 @@ export default function Home() {
       <div className="logo-banner">
         <div className="logo-btn-home">Hitchcock's <br></br> List</div>
       </div>
-      <AccountMenu firstName={firstName} lastName={lastName} uid={uid} history={history}/>
+      { showAccountMenu ?
+        <AccountMenu firstName={firstName} lastName={lastName} email={userEmail} uid={uid} history={history}/>
+      : null }
       <div className="top-banner">
         <Link to="/review"><img className="new-review" src={new_review} alt="New review"/></Link>
       </div>
