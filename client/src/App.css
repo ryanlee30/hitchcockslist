@@ -146,6 +146,19 @@ h6, h5, h4, p{
   background-color: #161616;
 }
 
+.user-info-loading {
+  position: fixed;
+  margin: auto;
+  width: 110px;
+  right: 145px;
+	bottom: 42px;
+  font-size: 17px;
+  animation: fade-in 1s;
+  cursor: pointer;
+  z-index: 10;
+  animation: apiLoading 1s infinite alternate;
+}
+
 .account-menu-opened {
   background-color: #161616;
   color: white;
@@ -211,6 +224,11 @@ h6, h5, h4, p{
 .film {
   margin: 20px;
   width: 135px;
+  animation: fade-in 0.5s;
+}
+
+.film-empty {
+  margin: 20px;
   animation: fade-in 0.5s;
 }
 
@@ -593,4 +611,16 @@ h6, h5, h4, p{
   font-family: Calibri;
   font-size: 14px;
   color: #c7e7ff;
+}
+
+@keyframes apiLoading {
+  from { opacity: 0; }
+}
+
+.films-loading {
+  position: absolute;
+  padding-left: 130px;
+  top: 270px;
+  margin: 24px 20px 20px 20px;
+  animation: apiLoading 0.75s infinite alternate;
 }

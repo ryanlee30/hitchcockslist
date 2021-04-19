@@ -1,7 +1,7 @@
 import '../App.css';
 import 'filepond/dist/filepond.min.css'
 import { React, useEffect, useState } from 'react';
-import { useHistory, useLocation, Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { Form, Alert } from 'react-bootstrap';
 import { auth } from '../firebase';
 import Quill from 'quill';
@@ -216,7 +216,7 @@ export default function NewReview() {
       </div>
       { showAccountMenu ?
         <AccountMenu firstName={firstName} lastName={lastName} email={userEmail} uid={uid} history={history}/>
-      : null }
+        : null }
       <div className="review-banner">
         <div className="artwork-label">
           Poster | Artwork

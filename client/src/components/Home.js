@@ -4,6 +4,7 @@ import { auth } from '../firebase';
 import SignOutFirstModal from './SignOutFirstModal';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import new_review from '../imgs/new_review.png'
+import films_loading from '../imgs/films_loading.png';
 import needle from 'needle';
 import AccountMenu from './AccountMenu';
 
@@ -17,6 +18,8 @@ export default function Home() {
   const [userEmail, setUserEmail] = useState("");
   const [uid, setUid] = useState("");
   const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const [showFilmsLoading, setShowFilmsLoading] = useState(true);
+  const [showFilmsEmptyMsg, setShowFilmsEmptyMsg] = useState(false);
 
   useEffect(() => {
     if (location.state) {
@@ -69,7 +72,11 @@ export default function Home() {
         if (!error && response.statusCode === 200) {
           const filmsData = response.body;
           if (filmsData) {
+            setShowFilmsLoading(false);
             setFilms(filmsData.films);
+          } else {
+            setShowFilmsLoading(false);
+            setShowFilmsEmptyMsg(true);
           }
         }
       });
@@ -119,21 +126,25 @@ export default function Home() {
       </div>
       { showAccountMenu ?
         <AccountMenu firstName={firstName} lastName={lastName} email={userEmail} uid={uid} history={history}/>
-      : null }
+        : null }
       <div className="top-banner">
         <Link to="/review"><img className="new-review" src={new_review} alt="New review"/></Link>
       </div>
-      <div className="catalogue">
-        {films ?
-          films.map((film, i) => (
-            <div className="film" key={i} onClick={() => {goToViewReview(film.filmId)}}>
-                <div className="filmTitle"><p>{film.filmTitle}</p></div>
-                <img className="filmArtwork" src={film.filmArtwork}/>
-                <div className="filmDirector"><p>{film.filmDirector}</p></div>
-            </div>))
-          : null
-        }
-      </div>
+      { showFilmsLoading ?
+        <div className="films-loading">
+          <img style={{width: "135px"}} src={films_loading}/>
+        </div> :
+        <div className="catalogue">
+          { showFilmsEmptyMsg ?
+            <p className="film-empty" style={{color: "#8F8F8F"}}>No films have been reviewed so far...</p> :
+            films.map((film, i) => (
+              <div className="film" key={i} onClick={() => {goToViewReview(film.filmId)}}>
+                  <div className="filmTitle"><p>{film.filmTitle}</p></div>
+                  <img className="filmArtwork" src={film.filmArtwork}/>
+                  <div className="filmDirector"><p>{film.filmDirector}</p></div>
+              </div>)) }
+        </div>
+      }
       <SignOutFirstModal show={modalShow} onHide={() => {setModalShow(false); history.replace("/home", { modalShow: false })}}/>
     </div>
     )
