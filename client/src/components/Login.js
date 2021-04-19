@@ -110,11 +110,11 @@ export default function Login() {
   }
 
   return (
-      <div style={{paddingBottom: 150}}>
+      <div>
         <Link to="/signup" className="redirect-btn" style={{textDecoration: 'none', float: 'right'}}>Sign up</Link>
         <br></br>
         <div style={{paddingTop: 100, paddingBottom: 50}}>
-          <GoogleButton onClick={googleAuthentication} />
+          <GoogleButton type="light" label="Log in with Google" onClick={googleAuthentication} style={{borderRadius: "5px"}}/>
         </div>
         <Form.Group controlId="formAuthEmail">
           <Form.Control type="email" placeholder="Email" spellCheck="false" onChange={e => setField("email", e.target.value)} isInvalid={ !!errors.email }/>

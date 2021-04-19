@@ -32,41 +32,49 @@ h6, h5, h4, p{
   font-family: Calibri;
 }
 
-.frontPageTitle {
-  padding-top: 35vh;
-  padding-left: 5vw;
-  font-size: calc(12px + 8vmin);
+.background-panel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://i.imgur.com/xTHTOpB.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.2;
+  filter: blur(4px);
 }
 
-.left-panel {
+.center-panel {
   position: absolute;
-  right: 25%;
-  width: 75%;
-  color: #FFE600;
-  font-family: Hitchcock;
-}
-
-.right-panel {
-  background-color: #0479D2;
-  position: absolute;
-  left: 75%;
-  width: 25%;
-  min-height: 100vh;
+  width: 400px;
+  height: 575px;
+  border-radius: 25px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: 30px;
   text-align: center;
   color: white;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #formAuthEmail, #formAuthPassword {
   width: 240px;
+  border: 0;
+  border-radius: 5px;
+  background-color: #363636;
+  color: white;
 }
 
 #formSignUpFirstName, #formSignUpLastName, #formSignUpEmail, #formSignUpPassword {
   width: 240px;
+  border: 0;
+  border-radius: 5px;
+  background-color: #363636;
+  color: white;
 }
 
 .redirect-btn {
@@ -81,7 +89,7 @@ h6, h5, h4, p{
 }
 
 .redirect-btn:hover {
-  color: #004f99;
+  color: #A7A7A7;
 }
 
 .redirect-btn-submit:hover {
@@ -102,6 +110,31 @@ h6, h5, h4, p{
   left: 0;
   width: 150px;
   height: 100vh;
+  z-index: 10;
+}
+
+@media only screen and (min-width: 741px) {
+  .logo-btn-front-page {
+    position: fixed;
+    top: 140px;
+    color: #ffffff;;
+    font-family: Hitchcock;
+    text-align: right;
+    transform: rotate(-90deg);
+    font-size: 25px;
+  }
+}
+
+@media only screen and (max-width: 740px) {
+  .logo-btn-front-page {
+    position: fixed;
+    top: 60px;
+    left: 85px;
+    color: #ffffff;;
+    font-family: Hitchcock;
+    text-align: left;
+    font-size: 25px;
+  }
 }
 
 .logo-btn, .logo-btn-home {
@@ -610,7 +643,7 @@ h6, h5, h4, p{
   text-align: left;
   font-family: Calibri;
   font-size: 14px;
-  color: #c7e7ff;
+  color: #dadada;
 }
 
 @keyframes apiLoading {

@@ -5,10 +5,11 @@ export default class Unprotected extends Component {
     render() {
         return (
             <div>
-                <div className="left-panel">
-                    <h1 className="frontPageTitle">Hitchcock's List</h1>
+                <div className="logo-banner">
+                    <div className="logo-btn-front-page">Hitchcock's <br></br> List</div>
                 </div>
-                <div className="right-panel">
+                <div className="background-panel"></div>
+                <div className="center-panel">
                     {this.props.children}
                 </div>
             </div>

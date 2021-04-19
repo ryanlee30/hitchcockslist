@@ -71,7 +71,7 @@ export default function ForgotPassword() {
   }
   
   return (
-      <div style={{paddingBottom: 150}}>
+      <div>
         { onPasswordReset === "success" ?
         <div>
           <Alert variant="success" style={{width: "250px", fontSize: "16px"}}>Password reset email has been sent!</Alert>

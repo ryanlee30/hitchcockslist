@@ -94,7 +94,7 @@ export default function Signup() {
   }
   
   return (
-      <div style={{paddingBottom: 150}}>
+      <div>
       <div style={{paddingBottom: 100}}>
           <Link to="/login" className="redirect-btn" style={{textDecoration: 'none', float: 'right'}}>Log in</Link>
       </div>
