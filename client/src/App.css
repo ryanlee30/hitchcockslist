@@ -157,7 +157,7 @@ h6, h5, h4, p{
 
 @media only screen and (max-width: 944px) {
   .review-banner {
-    position: absolute;
+    position: fixed;
     width: 385px;
     padding-left: 100px;
     left: 559px;
@@ -203,7 +203,7 @@ h6, h5, h4, p{
 @media only screen and (max-width: 944px) {
   .account-menu {
     color: white;
-    position: absolute;
+    position: fixed;
     margin: auto;
     text-align: center;
     width: 235px;
@@ -220,7 +220,7 @@ h6, h5, h4, p{
   .account-menu-opened {
     background-color: #161616;
     color: white;
-    position: absolute;
+    position: fixed;
     margin: auto;
     text-align: center;
     width: 235px;
@@ -243,6 +243,7 @@ h6, h5, h4, p{
   from {height: 64px;}
   to {height: 160px;}
 }
+
 
 .account-name {
   text-align: center;
@@ -271,6 +272,7 @@ h6, h5, h4, p{
   padding-top: 50px;
   height: 270px;
   width: calc(100vw - 305px);
+  min-width: 640px;
 }
 
 .catalogue {
@@ -278,13 +280,14 @@ h6, h5, h4, p{
   padding-left: 130px;
   top: 270px;
   width: calc(100vw - 305px);
+  min-width: 640px;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
 }
 
 .film {
-  margin: 20px;
+  margin: 17.5px;
   width: 135px;
   animation: fade-in 0.5s;
 }
@@ -333,13 +336,12 @@ h6, h5, h4, p{
   padding-right: 40px;
   width: calc(100vw - 235px - 100px - 200px);
   min-width: 410px;
-  height: auto;
-  min-height: calc(100vh - 50px);
-  max-height: calc(100vh - 50px);
+  height: calc(100vh - 50px);
   background-color: #222222;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   height: auto;
+  min-height: calc(100vh - 50px);
   padding-bottom: 40px;
 }
 
@@ -426,28 +428,11 @@ h6, h5, h4, p{
   animation: fade-in 0.3s;
 }
 
-@media only screen and (min-width: 1235px) {
-  #text-editor {
-    width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
-    min-width: 250px;
-    height: calc(100vh - 236px - 16px);
-  }
-}
-
-@media only screen and (max-width: 1234px) {
-  #text-editor {
-    width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
-    min-width: 250px;
-    height: calc(100vh - 236px - 16px - 55px);
-  }
-}
-
-@media only screen and (max-width: 1036px) {
-  #text-editor {
-    width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
-    min-width: 250px;
-    height: calc(100vh - 236px - 16px - 81px);
-  }
+#text-editor {
+  width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+  height: calc(100vh - 236px - 16px);
+  min-width: 250px;
+  position: fixed;
 }
 
 .ql-toolbar.ql-snow {
@@ -471,12 +456,13 @@ h6, h5, h4, p{
 
 .review-review {
   margin-top: 20px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   animation: fade-in 0.5s;
 }
 
 .content {
   width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+  min-width: 250px;
   padding: 20px;
   border-radius: 7px 7px 0px 7px;
   background-color: #343434;
@@ -489,12 +475,14 @@ h6, h5, h4, p{
 }
 
 .date {
-  margin-top: 5px;
-  float: right;
+  width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+  min-width: 250px;
+  text-align: right;
 }
 
 .date * {
   margin: 0;
+  margin-top: 5px;
   color: #CDCDCD;
 }
 
@@ -524,6 +512,7 @@ h6, h5, h4, p{
 
 #add-review-editor {
   width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+  min-width: 250px;
   height: 300px;
 }
 

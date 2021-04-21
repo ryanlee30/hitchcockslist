@@ -141,7 +141,7 @@ export default function Home() {
               <div className="film" key={i} onClick={() => {goToViewReview(film.filmId)}}>
                   <div className="filmTitle"><p>{film.filmTitle}</p></div>
                   <img className="filmArtwork" src={film.filmArtwork}/>
-                  <div className="filmDirector"><p>{film.filmDirector}</p></div>
+                  <div className="filmDirector"><p style={{margin: 0}}>{film.filmDirector}</p></div>
               </div>)) }
         </div>
       }
