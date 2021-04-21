@@ -46,8 +46,8 @@ h6, h5, h4, p{
 
 .center-panel {
   position: absolute;
-  width: 400px;
-  height: 575px;
+  width: auto;
+  height: auto;
   border-radius: 25px;
   display: flex;
   flex-direction: column;
@@ -127,13 +127,7 @@ h6, h5, h4, p{
 
 @media only screen and (max-width: 740px) {
   .logo-btn-front-page {
-    position: fixed;
-    top: 60px;
-    left: 85px;
-    color: #ffffff;;
-    font-family: Hitchcock;
-    text-align: left;
-    font-size: 25px;
+    display: none;
   }
 }
 
@@ -151,69 +145,104 @@ h6, h5, h4, p{
   text-decoration: none;
 }
 
-.review-banner {
-  position: fixed;
-  width: 385px;
-  padding-left: 100px;
-  right: 0;
-  height: 100vh;
+@media only screen and (min-width: 945px) {
+  .review-banner {
+    position: fixed;
+    width: 385px;
+    padding-left: 100px;
+    right: 0;
+    height: 100vh;
+  }
 }
 
-.account-menu {
-  color: white;
-  position: fixed;
-  margin: auto;
-  text-align: center;
-  width: 235px;
-  height: 64px;
-  right: 75px;
-	bottom: 20px;
-  border-radius: 25px;
-  font-size: 17px;
-  animation: fade-in 1s;
-  cursor: pointer;
-  z-index: 10;
+@media only screen and (max-width: 944px) {
+  .review-banner {
+    position: absolute;
+    width: 385px;
+    padding-left: 100px;
+    left: 559px;
+    height: 100vh;
+  }
+}
+
+@media only screen and (min-width: 945px) {
+  .account-menu {
+    color: white;
+    position: fixed;
+    margin: auto;
+    text-align: center;
+    width: 235px;
+    height: 64px;
+    right: 75px;
+    bottom: 20px;
+    border-radius: 25px;
+    font-size: 17px;
+    animation: fade-in 1s;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .account-menu-opened {
+    background-color: #161616;
+    color: white;
+    position: fixed;
+    margin: auto;
+    text-align: center;
+    width: 235px;
+    height: 160px;
+    right: 75px;
+    bottom: 20px;
+    border-radius: 25px;
+    font-size: 17px;
+    animation: expand 0.3s;
+    overflow: hidden;
+    z-index: 10;
+  }
+}
+
+@media only screen and (max-width: 944px) {
+  .account-menu {
+    color: white;
+    position: absolute;
+    margin: auto;
+    text-align: center;
+    width: 235px;
+    height: 64px;
+    left: 635px;
+    bottom: 20px;
+    border-radius: 25px;
+    font-size: 17px;
+    animation: fade-in 1s;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .account-menu-opened {
+    background-color: #161616;
+    color: white;
+    position: absolute;
+    margin: auto;
+    text-align: center;
+    width: 235px;
+    height: 160px;
+    left: 635px;
+    bottom: 20px;
+    border-radius: 25px;
+    font-size: 17px;
+    animation: expand 0.3s;
+    overflow: hidden;
+    z-index: 10;
+  }
 }
 
 .account-menu:hover {
   background-color: #161616;
 }
 
-.user-info-loading {
-  position: fixed;
-  margin: auto;
-  width: 110px;
-  right: 145px;
-	bottom: 42px;
-  font-size: 17px;
-  animation: fade-in 1s;
-  cursor: pointer;
-  z-index: 10;
-  animation: apiLoading 1s infinite alternate;
-}
-
-.account-menu-opened {
-  background-color: #161616;
-  color: white;
-  position: fixed;
-  margin: auto;
-  text-align: center;
-  width: 235px;
-  height: 165px;
-  right: 75px;
-	bottom: 20px;
-  border-radius: 25px;
-  font-size: 17px;
-  animation: expand 0.3s;
-  overflow: hidden;
-  z-index: 10;
-}
-
 @keyframes expand {
   from {height: 64px;}
-  to {height: 165px;}
+  to {height: 160px;}
 }
-
 
 .account-name {
   text-align: center;
@@ -303,12 +332,14 @@ h6, h5, h4, p{
   padding-left: 40px;
   padding-right: 40px;
   width: calc(100vw - 235px - 100px - 200px);
-  height: calc(100vh - 50px);
+  min-width: 410px;
+  height: auto;
+  min-height: calc(100vh - 50px);
+  max-height: calc(100vh - 50px);
   background-color: #222222;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   height: auto;
-  min-height: calc(100vh - 50px);
   padding-bottom: 40px;
 }
 
@@ -395,14 +426,33 @@ h6, h5, h4, p{
   animation: fade-in 0.3s;
 }
 
-#text-editor {
-  width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
-  height: calc(100vh - 236px - 16px);
-  position: fixed;
+@media only screen and (min-width: 1235px) {
+  #text-editor {
+    width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+    min-width: 250px;
+    height: calc(100vh - 236px - 16px);
+  }
+}
+
+@media only screen and (max-width: 1234px) {
+  #text-editor {
+    width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+    min-width: 250px;
+    height: calc(100vh - 236px - 16px - 55px);
+  }
+}
+
+@media only screen and (max-width: 1036px) {
+  #text-editor {
+    width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+    min-width: 250px;
+    height: calc(100vh - 236px - 16px - 81px);
+  }
 }
 
 .ql-toolbar.ql-snow {
   width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+  min-width: 250px;
   background-color: #ffffff;
   border-radius: 5px 5px 0 0;
   border: 0;
