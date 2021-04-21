@@ -428,11 +428,31 @@ h6, h5, h4, p{
   animation: fade-in 0.3s;
 }
 
-#text-editor {
-  width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
-  height: calc(100vh - 236px - 16px);
-  min-width: 250px;
-  position: fixed;
+@media only screen and (min-width: 1235px) {
+  #text-editor {
+    width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+    height: calc(100vh - 236px - 16px);
+    min-width: 250px;
+    position: absolute;
+  }
+}
+
+@media only screen and (min-width: 1037px) and (max-width: 1234px) {
+  #text-editor {
+    width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+    height: calc(100vh - 236px - 16px - 55px);
+    min-width: 250px;
+    position: absolute;
+  }
+}
+
+@media only screen and (max-width: 1036px) {
+  #text-editor {
+    width: calc(100vw - 285px - 50px - 80px - 200px - 80px);
+    height: calc(100vh - 236px - 16px - 81px);
+    min-width: 250px;
+    position: absolute;
+  }
 }
 
 .ql-toolbar.ql-snow {
