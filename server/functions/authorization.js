@@ -1,6 +1,6 @@
 const admin = require("./firebase/admin");
 
-function authorization(request, response, next) {
+const authorization = (request, response, next) => {
   const headerToken = request.headers.authorization;
   if (!headerToken) {
     return response.send({ message: "No token provided" }).status(401);

@@ -18,36 +18,6 @@ export default function Signup() {
     }
   }, [history]);
 
-  function createUser() {
-    firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            addUser(user.uid, user.email);
-            history.push('/login');
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-  }
-
-  function addUser(uid, email) {
-    const db = firebase.firestore();
-    db.collection('users').doc(uid).set({
-      firstName: form.firstName,
-      lastName: form.lastName,
-      email: email,
-      profilePicture: "",
-      uid: uid,
-      created: firebase.firestore.Timestamp.now()
-    });
-  };
-  
-  function onEnter(event) {
-    if (event.key === "Enter") {
-      onSubmit();
-    }
-  }
-
   const setField = (field, value) => {
     setForm({
         ...form,
@@ -61,36 +31,66 @@ export default function Signup() {
     }
   }
 
-  function validate() {
-      const errs = {};
-      if (!EmailValidator.validate(form.email)) {
-        errs.email = "Please provide a valid email address.";
-      }
-      if (!form.firstName.trim()) {
-        errs.firstName = "Please provide your first name.";
-      }
-      if (!form.lastName.trim()) {
-        errs.lastName = "Please provide your last name.";
-      }
-      if (!form.email.trim()) {
-        errs.email = "Please provide an email address.";
-      }
-      if (form.password.trim().length < 6) {
-        errs.password = "Password must be 6 or more characters.";
-      }
-      if (!form.password.trim()) {
-        errs.password = "Please provide a password.";
-      }
-      return errs;
+  const validate = () => {
+    const errs = {};
+    if (!EmailValidator.validate(form.email)) {
+      errs.email = "Please provide a valid email address.";
+    }
+    if (!form.firstName.trim()) {
+      errs.firstName = "Please provide your first name.";
+    }
+    if (!form.lastName.trim()) {
+      errs.lastName = "Please provide your last name.";
+    }
+    if (!form.email.trim()) {
+      errs.email = "Please provide an email address.";
+    }
+    if (form.password.trim().length < 6) {
+      errs.password = "Password must be 6 or more characters.";
+    }
+    if (!form.password.trim()) {
+      errs.password = "Please provide a password.";
+    }
+    return errs;
   }
 
-  function onSubmit() {
+  const addUser = (uid, email) => {
+    const db = firebase.firestore();
+    db.collection('users').doc(uid).set({
+      firstName: form.firstName,
+      lastName: form.lastName,
+      email: email,
+      profilePicture: "",
+      uid: uid,
+      created: firebase.firestore.Timestamp.now()
+    });
+  };
+
+  const createUser = () => {
+    firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            addUser(user.uid, user.email);
+            history.push('/login');
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+  }
+
+  const onSubmit = () => {
       const errs = validate();
       if (Object.keys(errs).length > 0) {
         setErrors(errs);
       } else {
         createUser();
       }
+  }
+
+  const onEnter = (event) => {
+    if (event.key === "Enter") {
+      onSubmit();
+    }
   }
   
   return (

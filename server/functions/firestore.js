@@ -1,7 +1,7 @@
 const admin = require("./firebase/admin");
 const db = admin.firestore();
 
-async function getUserInfo(uid) {
+const getUserInfo = async (uid) => {
     const usersRef = db.collection("users");
     const userRef = await usersRef.where("uid", "==", uid).get();
     if (userRef.size !== 0) {
@@ -24,7 +24,7 @@ async function getUserInfo(uid) {
     }
 }
 
-async function getReviews(filmId) {
+const getReviews = (filmId) => {
     const reviews = await db.collection("films").doc(filmId).get().then((result) => {
         if (result.data()) {
             return { filmTitle: result.data().title, filmDirector: result.data().director, reviews: result.data().reviews, filmArtwork: result.data().artwork };
@@ -40,7 +40,7 @@ async function getReviews(filmId) {
     }
 }
 
-async function getFilms(uid) {
+const getFilms = (uid) => {
     const filmsDBRef = db.collection("films");
     const filmsRef = await filmsDBRef.where("uid", "==", uid).get();
     if (filmsRef.size !== 0) {
@@ -51,7 +51,7 @@ async function getFilms(uid) {
     }
 }
 
-function parseFilms(films) {
+const parseFilms = (films) => {
     let parsedFilms = [];
     for (let film of films) {
         parsedFilms.push({

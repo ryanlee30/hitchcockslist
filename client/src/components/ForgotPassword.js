@@ -44,9 +44,9 @@ export default function ForgotPassword() {
 }
 
   const sendPasswordResetEmail = () => {
-    auth.sendPasswordResetEmail(form.email).then(function() {
+    auth.sendPasswordResetEmail(form.email).then(() => {
       setOnPasswordReset("success");
-    }).catch(function(error) {
+    }).catch((error) => {
       if (error.code === "auth/user-not-found") {
         setOnPasswordReset("user-not-found");
       } else {

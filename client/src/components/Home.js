@@ -38,7 +38,7 @@ export default function Home() {
           Authorization: "Bearer " + token,
         }
       }
-      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/user-info", options, function(error, response) {
+      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/user-info", options, (error, response) => {
         if (!error && response.statusCode === 200) {
           const userData = response.body;
           if (userData.firstName) {
@@ -68,7 +68,7 @@ export default function Home() {
           Authorization: "Bearer " + token,
         }
       }
-      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/fetch-films", options, function(error, response) { 
+      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/fetch-films", options, (error, response) => { 
         if (!error && response.statusCode === 200) {
           const filmsData = response.body;
           if (filmsData) {
@@ -88,9 +88,9 @@ export default function Home() {
           Authorization: "Bearer " + localStorage.getItem("@token"),
         }
       }
-      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/is-authorized", options, function(error, response) {
+      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/is-authorized", options, (error, response) => {
         if (error || response.statusCode === 401) {
-          auth.onAuthStateChanged(function(user) {
+          auth.onAuthStateChanged((user) => {
             if (user) {
               auth.currentUser.getIdToken(true).then((idToken) => {
                 if (idToken) {
@@ -113,7 +113,7 @@ export default function Home() {
     }
 
     isAuthorized();
-  }, [])
+  }, [location.state]);
 
   const goToViewReview = (filmId) => {
     history.push("/review/v", { filmId: filmId, firstName: firstName, lastName: lastName, email: userEmail, uid: uid });
@@ -132,7 +132,7 @@ export default function Home() {
       </div>
       { showFilmsLoading ?
         <div className="films-loading">
-          <img style={{width: "135px"}} src={films_loading}/>
+          <img style={{width: "135px"}} src={films_loading} alt="Film"/>
         </div> :
         <div className="catalogue">
           { showFilmsEmptyMsg ?
@@ -140,7 +140,7 @@ export default function Home() {
             films.map((film, i) => (
               <div className="film" key={i} onClick={() => {goToViewReview(film.filmId)}}>
                   <div className="filmTitle"><p>{film.filmTitle}</p></div>
-                  <img className="filmArtwork" src={film.filmArtwork}/>
+                  <img className="filmArtwork" src={film.filmArtwork} alt="Film artwork"/>
                   <div className="filmDirector"><p style={{margin: 0}}>{film.filmDirector}</p></div>
               </div>)) }
         </div>

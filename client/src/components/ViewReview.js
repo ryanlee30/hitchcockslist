@@ -51,13 +51,13 @@ export default function ViewReview() {
       setUserEmail(location.state.email);
       setUid(location.state.uid);
   
-      async function fetchReviews() {
+      const fetchReviews = async () => {
         const options = {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("@token"),
           }
         }
-        needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/fetch-reviews?filmId="+ location.state.filmId, options, function(error, response) {
+        needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/fetch-reviews?filmId="+ location.state.filmId, options, (error, response) => {
           if (!error && response.statusCode === 200) {
             const reviewData = response.body;
             setFilmTitle(reviewData.filmTitle);
@@ -95,10 +95,10 @@ export default function ViewReview() {
         setReviewEditor(editor);
       }
     }
-  }, [showEditor, loadReviews])
+  }, [showEditor, loadReviews, history, location.state]);
 
   // called by both add and remove review fn
-  function persistContent() {
+  const persistContent = () => {
     let editor = reviewEditor;
     let updateReviews = new Reviews(filmReviewsRaw);
     const db = firebase.firestore();
@@ -111,25 +111,7 @@ export default function ViewReview() {
     });
   }
 
-  const scrollToBottom = () => {
-    animateScroll.scrollToBottom({
-      containerId: "text-editor-container"
-    });
-  }
-
-  function displayEditor() {
-    setShowEditor(true);
-    setShowAddBtn(false);
-    scrollToBottom();
-  }
-
-  function hideEditor() {
-    setShowEditor(false);
-    setShowAddBtn(true);
-    setShowError(false);
-  }
-
-  function validate() {
+  const validate = () => {
     let validationErrorMsg = "";
     if (reviewEditor.getContents().ops.length === 1) {
       if (reviewEditor.getContents().ops[0].insert.trim() === "") {
@@ -149,7 +131,7 @@ export default function ViewReview() {
     }
   }
 
-  function changeArtwork() {
+  const changeArtwork = () => {
     setShowArtwork(!showArtwork);
     setShowFilePond(showArtwork);
     if (showError) {
@@ -157,7 +139,7 @@ export default function ViewReview() {
     }
   }
 
-  function submitChangeArtwork() {
+  const submitChangeArtwork = () => {
     if (imageFile[0]) {
       const data = {
         "image": imageFile[0].getFileEncodeBase64String()
@@ -165,7 +147,7 @@ export default function ViewReview() {
       const headers = {
         "Authorization": "Client-ID 2c37087269a1a68"
       }
-      needle.post("https://api.imgur.com/3/image", data, { headers: headers, multipart: true }, function(err, resp, body) {
+      needle.post("https://api.imgur.com/3/image", data, { headers: headers, multipart: true }, (err, resp, body) => {
         if (body.status === 200) {
           setFilmArtwork(body.data.link);
           const db = firebase.firestore();
@@ -188,11 +170,7 @@ export default function ViewReview() {
     }
   }
 
-  function hideError() {
-    setShowError(false);
-  }
-
-    return (
+  return (
     <div className="view-review-page">
       <div className="logo-banner">
         <Link className="logo-btn" to="/home">Hitchcock's <br></br> List</Link>
@@ -212,7 +190,7 @@ export default function ViewReview() {
               <FilePond
               className="artwork-upload"
               files={imageFile}
-              onaddfile={hideError}
+              onaddfile={() => setShowError(false)}
               onupdatefiles={setImageFile}
               allowMultiple={false}
               allowPaste={false}
@@ -226,7 +204,7 @@ export default function ViewReview() {
             : null}
           {showArtwork ?
             <div className="change-artwork-content-container" onClick={changeArtwork} onMouseEnter={() => setShowChangeArtworkLabel(true)} onMouseLeave={() => setShowChangeArtworkLabel(false)}>
-              <img className="change-artwork-content" src={filmArtwork}/>
+              <img className="change-artwork-content" src={filmArtwork} alt="Change artwork"/>
               {showChangeArtworkLabel ?
                 <p className="change-artwork-content-label">Change<br></br>Artwork</p>
               : null}
@@ -254,13 +232,23 @@ export default function ViewReview() {
             <div className ="text-editor-container">
               <div id="add-review-editor"></div>
               <div className="add-review-editor-btn-container">
-                <div className="add-review-editor-btn" onClick={hideEditor}>Cancel</div>&nbsp;&nbsp;&nbsp;&nbsp;
+                <div className="add-review-editor-btn" onClick={() => {
+                  setShowEditor(false);
+                  setShowAddBtn(true);
+                  setShowError(false);
+                }}>Cancel</div>&nbsp;&nbsp;&nbsp;&nbsp;
                 <div className="add-review-editor-btn" onClick={validate}>Submit</div>
               </div>
             </div>
             : null }
           { showAddBtn ?
-            <div className="review-add-review" onClick={displayEditor}>
+            <div className="review-add-review" onClick={() => {
+              setShowEditor(true);
+              setShowAddBtn(false);
+              animateScroll.scrollToBottom({
+                containerId: "text-editor-container"
+              });
+            }}>
               <img className="plus-sign" src={add_review} alt="add_review"/>
             </div>
             : null}

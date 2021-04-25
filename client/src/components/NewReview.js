@@ -32,7 +32,7 @@ export default function NewReview() {
   const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
-    async function loadUserData(idToken) {
+    const loadUserData = (idToken) => {
       let token = localStorage.getItem("@token");
       if (idToken) {
         token = idToken;
@@ -42,7 +42,7 @@ export default function NewReview() {
           Authorization: "Bearer " + token,
         }
       }
-      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/user-info", options, function(error, response) {
+      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/user-info", options, (error, response) => {
         if (!error && response.statusCode === 200) {
           const userData = response.body;
           if (userData.firstName) {
@@ -62,15 +62,15 @@ export default function NewReview() {
       });
     }
 
-    function isAuthorized() {
+    const isAuthorized = () => {
       const options = {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("@token"),
         }
       }
-      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/is-authorized", options, function(error, response) {
+      needle.get("https://us-west2-hitchcockslist.cloudfunctions.net/app/is-authorized", options, (error, response) => {
         if (error || response.statusCode === 401) {
-          auth.onAuthStateChanged(function(user) {
+          auth.onAuthStateChanged((user) => {
             if (user) {
               auth.currentUser.getIdToken(true).then((idToken) => {
                 if (idToken) {
@@ -93,7 +93,6 @@ export default function NewReview() {
     isAuthorized();
 
     let toolbarOptions = [
-      [{ 'header': [3, 4, 5, 6, false] }],
       ['bold', 'italic', 'underline'],
       [{ 'align': [] }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }]
@@ -108,9 +107,22 @@ export default function NewReview() {
     
     let editor = new Quill("#text-editor", options);
     setReviewEditor(editor);
-  }, [])
+  }, []);
 
-  function persistContent() {
+  const setField = (field, value) => {
+    setForm({
+      ...form,
+      [field]: value
+    })
+    if (!!errors[field]) {
+      setErrors({
+        ...errors,
+        [field]: null
+      })
+    }
+  }
+
+  const persistContent = () => {
     let editor = reviewEditor;
     let contents = {
       reviews: [
@@ -129,7 +141,7 @@ export default function NewReview() {
       const headers = {
         "Authorization": "Client-ID 2c37087269a1a68"
       }
-      needle.post("https://api.imgur.com/3/image", data, { headers: headers, multipart: true }, function(err, resp, body) {
+      needle.post("https://api.imgur.com/3/image", data, { headers: headers, multipart: true }, (err, resp, body) => {
         if (body.status === 200) {
           artworkUrl = (body.data.link);
           const db = firebase.firestore();
@@ -160,20 +172,7 @@ export default function NewReview() {
     }
   }
 
-  const setField = (field, value) => {
-    setForm({
-      ...form,
-      [field]: value
-    })
-    if (!!errors[field]) {
-      setErrors({
-        ...errors,
-        [field]: null
-      })
-    }
-  }
-
-  function validate() {
+  const validate = () => {
     const errs = {};
     if (!form.film_title.trim()) {
       errs.film_title = "A film title is required."
@@ -184,7 +183,7 @@ export default function NewReview() {
     return errs;
   }
 
-  function onSubmit() {
+  const onSubmit = () => {
     const errs = validate();
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
@@ -212,7 +211,7 @@ export default function NewReview() {
     }
   }
 
-    return (
+  return (
     <div className="new-review-page">
       <div className="logo-banner">
         <Link className="logo-btn" to="/home">Hitchcock's <br></br> List</Link>
@@ -258,7 +257,7 @@ export default function NewReview() {
                 </Form.Control.Feedback>
             </Form.Group>
           </Form>
-          <div id="text-editor">
+          <div id="text-editor" onClick={() => reviewEditor.focus()}>
           </div>
         </div>
       </div>

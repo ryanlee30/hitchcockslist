@@ -2,7 +2,7 @@ import '../App.css';
 import { React, useState, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { auth, firebase } from '../firebase';
-import { Form, Alert } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import GoogleButton from 'react-google-button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as EmailValidator from 'email-validator';
@@ -19,7 +19,7 @@ export default function Login() {
     }
   }, [history]);
 
-  async function googleAuthentication() {
+  const googleAuthentication = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     await auth.signInWithPopup(provider).then(
       async () => {
@@ -28,7 +28,7 @@ export default function Login() {
           localStorage.setItem("@token", token);
         }
       },
-      function (error) {
+      (error) => {
         console.log(error);
       }
     ).then(() => {
@@ -36,7 +36,7 @@ export default function Login() {
     });
   }
 
-  function passwordAuthentication() {
+  const passwordAuthentication = () => {
     firebase.auth().signInWithEmailAndPassword(form.email, form.password)
       .then(() => {
         firebase.auth().currentUser.getIdToken(true).then((idToken) => {
@@ -67,12 +67,6 @@ export default function Login() {
       });
   }
 
-  function onEnter(event) {
-    if (event.key === "Enter") {
-      onSubmit();
-    }
-  }
-
   const setField = (field, value) => {
     setForm({
         ...form,
@@ -86,7 +80,7 @@ export default function Login() {
     }
   }
 
-  function validate() {
+  const validate = () => {
       const errs = {};
       if (!EmailValidator.validate(form.email)) {
         errs.email = "Please provide a valid email address.";
@@ -100,7 +94,7 @@ export default function Login() {
       return errs;
   }
 
-  function onSubmit() {
+  const onSubmit = () => {
       const errs = validate();
       if (Object.keys(errs).length > 0) {
         setErrors(errs);
@@ -109,29 +103,35 @@ export default function Login() {
       }
   }
 
+  const onEnter = (event) => {
+    if (event.key === "Enter") {
+      onSubmit();
+    }
+  }
+
   return (
-      <div>
-        <Link to="/signup" className="redirect-btn" style={{textDecoration: 'none', float: 'right'}}>Sign up</Link>
-        <br></br>
-        <div style={{paddingTop: 100, paddingBottom: 50}}>
-          <GoogleButton type="light" label="Log in with Google" onClick={googleAuthentication} style={{borderRadius: "5px"}}/>
-        </div>
-        <Form.Group controlId="formAuthEmail">
-          <Form.Control type="email" placeholder="Email" spellCheck="false" onChange={e => setField("email", e.target.value)} isInvalid={ !!errors.email }/>
-          <Form.Control.Feedback type="invalid" className="field-error">
-            { errors.email }
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group controlId="formAuthPassword">
-          <Form.Control type="password" placeholder="Password" spellCheck="false" onChange={e => setField("password", e.target.value)} onKeyPress={e => onEnter(e)} isInvalid={ !!errors.password }/>
-          <Form.Control.Feedback type="invalid" className="field-error">
-            { errors.password }
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Link to="#" className="redirect-btn" style={{textDecoration: 'none'}} onClick={onSubmit}>Log in</Link>
-        <div>
-          <Link to="/forgot-password" className="forgot-pwd-btn" style={{textDecoration: 'none'}}>Forgot your password?</Link>
-        </div>
+    <div>
+      <Link to="/signup" className="redirect-btn" style={{textDecoration: 'none', float: 'right'}}>Sign up</Link>
+      <br></br>
+      <div style={{paddingTop: 100, paddingBottom: 50}}>
+        <GoogleButton type="light" label="Log in with Google" onClick={googleAuthentication} style={{borderRadius: "5px"}}/>
       </div>
+      <Form.Group controlId="formAuthEmail">
+        <Form.Control type="email" placeholder="Email" spellCheck="false" onChange={e => setField("email", e.target.value)} isInvalid={ !!errors.email }/>
+        <Form.Control.Feedback type="invalid" className="field-error">
+          { errors.email }
+        </Form.Control.Feedback>
+      </Form.Group>
+      <Form.Group controlId="formAuthPassword">
+        <Form.Control type="password" placeholder="Password" spellCheck="false" onChange={e => setField("password", e.target.value)} onKeyPress={e => onEnter(e)} isInvalid={ !!errors.password }/>
+        <Form.Control.Feedback type="invalid" className="field-error">
+          { errors.password }
+        </Form.Control.Feedback>
+      </Form.Group>
+      <Link to="#" className="redirect-btn" style={{textDecoration: 'none'}} onClick={onSubmit}>Log in</Link>
+      <div>
+        <Link to="/forgot-password" className="forgot-pwd-btn" style={{textDecoration: 'none'}}>Forgot your password?</Link>
+      </div>
+    </div>
   );
 }
