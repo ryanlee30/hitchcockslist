@@ -1,7 +1,7 @@
 import '../App.css'
 import { Component } from 'react';
 import { Form, Alert } from 'react-bootstrap';
-import { firebase, auth } from '../firebase';
+import { auth } from '../firebase';
 
 export default class ChangeAccountSecurity extends Component {
     constructor() {
@@ -10,13 +10,6 @@ export default class ChangeAccountSecurity extends Component {
             onPasswordUpdate: "",
             errors: {},
             form: {new_password: "", confirm_new_password: ""},
-            // image: "",
-            // preview: null,
-            // scale: 1.2,
-            // width: 195,
-            // height: 195,
-            // borderRadius: 999,
-            // postion: { x: 0.5, y: 0.5 },
         }
         this.setField = this.setField.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -81,7 +74,7 @@ export default class ChangeAccountSecurity extends Component {
         if (this.state.form.new_password !== this.state.form.confirm_new_password) {
             errs.new_password = "Passwords didn't match. Please try again.";
             this.setState({
-                onPasswordUpdate: "does-not-match"
+                onPasswordUpdate: ""
             });
         }
         if (!this.state.form.new_password.trim() && this.state.form.confirm_new_password.trim()) {
@@ -114,12 +107,6 @@ export default class ChangeAccountSecurity extends Component {
                     </Alert>
                     : null
                 }
-                {/* { this.state.onPasswordUpdate === "does-not-match" ?
-                    <Alert variant="danger">
-                        Password confirmation does not match.
-                    </Alert>
-                    : null
-                } */}
                 { this.state.onPasswordUpdate === "login-again" ?
                     <Alert variant="warning">
                         Please try after logging in again.

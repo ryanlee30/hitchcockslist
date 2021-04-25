@@ -206,14 +206,22 @@ export default function NewReview() {
     } else {
       setErrorMsg(validationErrorMsg);
       setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
     }
   }
 
     return (
-    <div>
+    <div className="new-review-page">
       <div className="logo-banner">
         <Link className="logo-btn" to="/home">Hitchcock's <br></br> List</Link>
       </div>
+      {showError ?
+          <Alert className="validation-error-msg" variant="danger" onClose={() => setShowError(false)} dismissible>
+            {errorMsg}
+          </Alert>
+          : null}
       { showAccountMenu ?
         <AccountMenu firstName={firstName} lastName={lastName} email={userEmail} uid={uid} history={history}/>
         : null }
@@ -229,37 +237,28 @@ export default function NewReview() {
           allowPaste={false}
           labelIdle='Drag & drop or <span class="filepond--label-action">Browse</span>'
         />
-        {showError ?
-          <Alert className="validation-error-msg" variant="danger" onClose={() => setShowError(false)}>
-            {errorMsg}
-          </Alert>
-          : null}
       </div>
       <div className="review-body">
-        <div className="review-console">
-          <div className="review-console-header-container">
-            <div className="review-console-header-head">
-              <h5>About your review</h5>
-              <Link to="#" className="redirect-btn-submit" style={{textDecoration: 'none', float: 'right'}} onClick={onSubmit}>Submit</Link>
-            </div>
-            <Form className="review-console-film-info">
-              <Form.Group controlId="formFilmTitle">
-                  <Form.Control type="text" placeholder="Film title" autoComplete="off" spellCheck="false" onChange={e => setField("film_title", e.target.value)} onKeyPress={validate} isInvalid={ !!errors.film_title }/>
-                  <Form.Control.Feedback type="invalid">
-                    { errors.film_title }
-                  </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group controlId="formFilmDirector">
-                  <Form.Control type="text" placeholder="Director" autoComplete="off" spellCheck="false" onChange={e => setField("film_director", e.target.value)} onKeyPress={validate} isInvalid={ !!errors.film_director }/>
-                  <Form.Control.Feedback type="invalid">
-                  { errors.film_director }
-                  </Form.Control.Feedback>
-              </Form.Group>
-            </Form>
+        <div className="new-review-console">
+          <div className="review-console-header">
+            <h5>About your review</h5>
+            <Link to="#" className="redirect-btn-submit" style={{textDecoration: 'none', float: 'right'}} onClick={onSubmit}>Submit</Link>
           </div>
-          <div className="text-editor-container">
-            <div id="text-editor">
-            </div>
+          <Form className="review-console-film-info">
+            <Form.Group controlId="formFilmTitle">
+                <Form.Control type="text" placeholder="Film title" autoComplete="off" spellCheck="false" onChange={e => setField("film_title", e.target.value)} onKeyPress={validate} isInvalid={ !!errors.film_title }/>
+                <Form.Control.Feedback type="invalid">
+                  { errors.film_title }
+                </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="formFilmDirector">
+                <Form.Control type="text" placeholder="Director" autoComplete="off" spellCheck="false" onChange={e => setField("film_director", e.target.value)} onKeyPress={validate} isInvalid={ !!errors.film_director }/>
+                <Form.Control.Feedback type="invalid">
+                { errors.film_director }
+                </Form.Control.Feedback>
+            </Form.Group>
+          </Form>
+          <div id="text-editor">
           </div>
         </div>
       </div>

@@ -40,7 +40,6 @@ export default class Reviews {
 
     // to be used in ViewReviews.js
     removeReview(content) {
-        // keep in mind we do not allow duplicate reviews
         // returns the JSON string form of new JS array of review objects
         return JSON.stringify(this.getReviews().filter(rev => rev.content !== content));
     }

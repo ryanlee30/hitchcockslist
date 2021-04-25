@@ -15,7 +15,7 @@ export default function SignOutFirstModal(props) {
         </Modal.Header>
         <Modal.Body>
           <p style={{textAlign: 'center', color: 'black'}}>
-            Oops, you're already logged in. Please sign out first.
+           You're already logged in. Please sign out first.
           </p>
         </Modal.Body>
         <Modal.Footer>

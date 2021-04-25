@@ -11,47 +11,10 @@ export default class ChangeProfile extends Component {
             onPasswordUpdate: "",
             errors: {},
             form: {first_name: "", last_name: ""},
-            // image: "",
-            // preview: null,
-            // scale: 1.2,
-            // width: 195,
-            // height: 195,
-            // borderRadius: 999,
-            // postion: { x: 0.5, y: 0.5 },
         }
         this.setField = this.setField.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        // this.handleSave = this.handleSave.bind(this);
     }
-
-    // handleNewImage = e => {
-    //     this.setState({ image: e.target.files[0] });
-    // }
-
-    // setEditorRef = editor => {
-    //     if (editor) this.editor = editor;
-    // }
-
-    // handleSave() {
-    //     const img = this.editor.getImageScaledToCanvas().toDataURL();
-    //     const rect = this.editor.getCroppingRect();
-    
-    //     return {
-    //       preview: {
-    //         img,
-    //         rect,
-    //         scale: this.state.scale,
-    //         width: this.state.width,
-    //         height: this.state.height,
-    //         borderRadius: this.state.borderRadius,
-    //       }
-    //     }
-    // }
-
-    // logCallback(e) {
-    //     // eslint-disable-next-line no-console
-    //     console.log('callback', e);
-    // }
 
     persistData() {
         if (this.props.uid) {
@@ -59,16 +22,15 @@ export default class ChangeProfile extends Component {
             db.collection('users').doc(this.props.uid).update({
                 firstName: this.state.form.first_name,
                 lastName: this.state.form.last_name,
-                // profilePicture: this.handleSave()
             }).then(() => {
                 if (this.props.history) {
                     if (this.props.history.location.pathname === "/review/v") {
                         let history = this.props.history;
-                        setTimeout(function() {
+                        setTimeout(() => {
                             history.push("/home");
                         }, 750);
                     } else {
-                        setTimeout(function() {
+                        setTimeout(() => {
                             window.location.reload();
                         }, 750);
                     }
@@ -158,21 +120,6 @@ export default class ChangeProfile extends Component {
                         { this.state.errors.last_name }
                     </Form.Control.Feedback>
                 </Form.Group>
-                {/* <p style={{marginTop: "40px"}}>Profile Picture</p>
-                <AvatarEditor
-                    ref={this.setEditorRef}
-                    image={this.state.image}
-                    width={this.state.width}
-                    height={this.state.height}
-                    borderRadius={this.state.borderRadius}
-                    scale={this.state.scale}
-                    onLoadFailure={this.logCallback.bind(this, 'onLoadFailed')}
-                    color={[50,50,50, 0.6]}
-                />
-                <label class="upload-pp" for="upload-pp">
-                    Upload a photo
-                </label>
-                <input id="upload-pp" style={{marginTop: "15px", display: "none"}} name="newImage" type="file" onChange={this.handleNewImage} /> */}
                 <p style={{fontSize: "17px", cursor: "pointer", width: "100px", position: "fixed", right: "0", bottom: "0", marginRight: "40px", marginBottom: "28px"}} onClick={this.onSubmit}>Update Profile</p>
             </div>
         )

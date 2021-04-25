@@ -1,9 +1,9 @@
 import '../App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, useState, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import { auth } from '../firebase';
 import { Form, Alert } from 'react-bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { auth } from '../firebase';
 import * as EmailValidator from 'email-validator';
 
 export default function ForgotPassword() {
@@ -19,24 +19,6 @@ export default function ForgotPassword() {
     }
   }, [history]);
 
-  function sendPasswordResetEmail() {
-    auth.sendPasswordResetEmail(form.email).then(function() {
-      setOnPasswordReset("success");
-    }).catch(function(error) {
-      if (error.code === "auth/user-not-found") {
-        setOnPasswordReset("user-not-found");
-      } else {
-        setOnPasswordReset("unknown");
-      }
-    });
-  }
-  
-  function onEnter(event) {
-    if (event.key === "Enter") {
-      onSubmit();
-    }
-  }
-
   const setField = (field, value) => {
     setForm({
         ...form,
@@ -50,24 +32,42 @@ export default function ForgotPassword() {
     }
   }
 
-  function validate() {
-      const errs = {};
-      if (!EmailValidator.validate(form.email)) {
-        errs.email = "Please provide a valid email address.";
+  const validate = () => {
+    const errs = {};
+    if (!EmailValidator.validate(form.email)) {
+      errs.email = "Please provide a valid email address.";
+    }
+    if (!form.email.trim()) {
+      errs.email = "Please provide an email address.";
+    }
+    return errs;
+}
+
+  const sendPasswordResetEmail = () => {
+    auth.sendPasswordResetEmail(form.email).then(function() {
+      setOnPasswordReset("success");
+    }).catch(function(error) {
+      if (error.code === "auth/user-not-found") {
+        setOnPasswordReset("user-not-found");
+      } else {
+        setOnPasswordReset("unknown");
       }
-      if (!form.email.trim()) {
-        errs.email = "Please provide an email address.";
-      }
-      return errs;
+    });
   }
 
-  function onSubmit() {
+  const onSubmit = () => {
       const errs = validate();
       if (Object.keys(errs).length > 0) {
         setErrors(errs);
       } else {
         sendPasswordResetEmail();
       }
+  }
+
+  const onEnter = (event) => {
+    if (event.key === "Enter") {
+      onSubmit();
+    }
   }
   
   return (

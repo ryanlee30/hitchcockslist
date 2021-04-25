@@ -1,6 +1,7 @@
 import '../App.css';
 import 'filepond/dist/filepond.min.css'
 import { React, useEffect, useState } from 'react';
+import { animateScroll } from 'react-scroll';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 import needle from 'needle';
@@ -78,7 +79,6 @@ export default function ViewReview() {
   
       if (showEditor) {
         let toolbarOptions = [
-          [{ 'header': [3, 4, 5, 6, false] }],
           ['bold', 'italic', 'underline'],
           [{ 'align': [] }],
           [{ 'list': 'ordered'}, { 'list': 'bullet' }]
@@ -111,9 +111,16 @@ export default function ViewReview() {
     });
   }
 
+  const scrollToBottom = () => {
+    animateScroll.scrollToBottom({
+      containerId: "text-editor-container"
+    });
+  }
+
   function displayEditor() {
     setShowEditor(true);
     setShowAddBtn(false);
+    scrollToBottom();
   }
 
   function hideEditor() {
@@ -136,6 +143,9 @@ export default function ViewReview() {
     } else {
       setErrorMsg(validationErrorMsg);
       setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
     }
   }
 
@@ -172,6 +182,9 @@ export default function ViewReview() {
     } else {
       setErrorMsg("Please upload a poster or artwork first");
       setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
     }
   }
 
@@ -180,10 +193,15 @@ export default function ViewReview() {
   }
 
     return (
-    <div>
+    <div className="view-review-page">
       <div className="logo-banner">
         <Link className="logo-btn" to="/home">Hitchcock's <br></br> List</Link>
       </div>
+      {showError ?
+        <Alert className="validation-error-msg" variant="danger" onClose={() => setShowError(false)} dismissible>
+          {errorMsg}
+        </Alert>
+        : null}
       <AccountMenu firstName={firstName} lastName={lastName} email={userEmail} uid={uid} history={history}/>
       <div className="review-banner">
         <div className="artwork-label">
@@ -214,15 +232,10 @@ export default function ViewReview() {
               : null}
             </div>
             : null}
-          {showError ?
-            <Alert className="validation-error-msg" variant="danger" onClose={() => setShowError(false)}>
-              {errorMsg}
-            </Alert>
-            : null}
         </div>
       </div>
       <div className="review-body">
-        <div className="review-console">
+        <div className="view-review-console">
           <div className="review-console-header-container">
             <div className="view-review-console-header-head">
               <h4>{filmTitle}</h4>

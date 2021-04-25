@@ -28,7 +28,7 @@ export default function Home() {
       }
     }
 
-    function loadUserData(idToken) {
+    const loadUserData = (idToken) => {
       let token = localStorage.getItem("@token");
       if (idToken) {
         token = idToken;
@@ -58,7 +58,7 @@ export default function Home() {
       });
     }
 
-    function fetchFilms(idToken) {
+    const fetchFilms = (idToken) => {
       let token = localStorage.getItem("@token");
       if (idToken) {
         token = idToken;
@@ -82,7 +82,7 @@ export default function Home() {
       });
     }
 
-    function isAuthorized() {
+    const isAuthorized = () => {
       const options = {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("@token"),
@@ -115,7 +115,7 @@ export default function Home() {
     isAuthorized();
   }, [])
 
-  function goToViewReview(filmId) {
+  const goToViewReview = (filmId) => {
     history.push("/review/v", { filmId: filmId, firstName: firstName, lastName: lastName, email: userEmail, uid: uid });
   }
 
