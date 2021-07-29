@@ -1,5 +1,5 @@
 # Hitchcock's List
-A review platform for keeping track of your ever changing taste and appreciation for films.
+A review platform for keeping track of your ever-changing taste and appreciation for films.
   
 Deployed on: https://hitchcockslist.web.app
 
